@@ -1,21 +1,41 @@
 <!doctype html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Doxa Essence. Een nieuw verhaal begint binnenkort." />
-    <meta name="theme-color" content="#f5f1e8" />
-    <title>Doxa Essence — Binnenkort</title>
-  </head>
-  <body>
-    <main>
-      <p class="eyebrow">DOXA ESSENCE</p>
-      <span class="ornament" aria-hidden="true">D</span>
-      <h1>Een nieuw verhaal.<br /><em>Een eigen essence.</em></h1>
-      <p class="intro">We werken aan iets bijzonders. Binnenkort ontdek je hier de wereld van Doxa Essence.</p>
-      <p class="soon">BINNENKORT ONLINE</p>
-    </main>
-    <footer>DOXA ESSENCE <span>© 2026</span></footer>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doxa Essence. Geuren met karakter. Ontdek jouw eigen essence.">
+  <meta name="theme-color" content="#f6f4ef"><title>Doxa Essence — Leave an impression.</title>
+</head>
+<body>
+  <a class="skip" href="#main">Naar inhoud</a>
+  <div class="announcement">EEN EERSTE BLIK OP DOXA ESSENCE <span>—</span> PRIVATE PREVIEW</div>
+  <header class="header">
+    <button class="icon-button mobile-menu" aria-label="Menu openen" aria-expanded="false" aria-controls="navigation"><span></span><span></span></button>
+    <nav id="navigation" aria-label="Hoofdnavigatie"><a href="#collectie">COLLECTIE</a><a href="#verhaal">ONS VERHAAL</a><button data-quiz>VIND JOUW GEUR <span>↗</span></button></nav>
+    <a href="#" class="wordmark" aria-label="Doxa Essence homepage">DOXA<span>ESSENCE</span></a>
+    <div class="header-tools"><span class="locale">NL / EUR €</span><button class="icon-button search-open" aria-label="Zoeken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><form method="post" action="/__access/logout"><button class="icon-button" aria-label="Uitloggen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 4H4v16h5M10 12h11m-4-4 4 4-4 4"/></svg></button></form></div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-image" src="/images/doxa-campaign.png" alt="Doxa Essence conceptflacon in warm zonlicht op natuursteen" fetchpriority="high">
+      <div class="hero-shade"></div>
+      <div class="hero-copy"><p class="eyebrow">THE ART OF LEAVING A TRACE.</p><h1 id="hero-title">LEAVE AN<br>IMPRESSION.</h1><p>Een geur die blijft.<br>Een gevoel dat van jou is.</p><a class="button light" href="#collectie">ONTDEK DOXA ESSENCE <span>↗</span></a></div>
+      <div class="hero-bottom"><span>YOUR ESSENCE. YOUR EXPRESSION.</span><a href="#collectie" aria-label="Scroll naar de collectie">ONTDEK MEER ↓</a><span>01 — 03</span></div>
+    </section>
+    <section class="intro"><span class="eyebrow">MEER DAN EEN GEUR.</span><h2>SOME THINGS<br>STAY WITH YOU.</h2><div><p>Een moment. Een herinnering. Een eerste indruk.<br>Geur vertelt een verhaal zonder een woord te zeggen.</p><p>Ontdek de wereld van Doxa Essence.<br>Persoonlijk, uitgesproken en helemaal van jou.</p><a class="text-link" href="#verhaal">DIT IS DOXA ESSENCE ↗</a></div></section>
+    <section class="collection" id="collectie">
+      <div class="section-heading"><div><p class="eyebrow">THE FIRST CHAPTER</p><h2>FIND YOUR ESSENCE.</h2></div><p>Drie karakters. Jouw verhaal.</p></div>
+      <div class="filters" aria-label="Filter op geurkarakter"><button class="active" data-filter="all" aria-pressed="true">ALLE GEUREN</button><button data-filter="warm" aria-pressed="false">WARM & ZONNIG</button><button data-filter="deep" aria-pressed="false">DIEP & INTENS</button><button data-filter="fresh" aria-pressed="false">FRIS & ZACHT</button></div>
+      <div class="product-grid" id="products"></div>
+      <p class="concept-note">Een verkenning van onze collectie. Namen, geurnoten en flacons zijn concepten — nog niet te bestellen.</p>
+    </section>
+    <section class="story" id="verhaal"><div class="story-image"><img src="/images/doxa-campaign.png" alt="Detail van de Doxa Essence conceptflacon" loading="lazy"><span>THE WORLD OF DOXA ESSENCE</span></div><div class="story-copy"><p class="eyebrow">GEUR MET EEN EIGEN KARAKTER.</p><h2>MADE TO<br>FEEL LIKE<br><em>YOU.</em></h2><p>Je hoeft niet op te gaan in de massa.<br>En je geur al helemaal niet.</p><p>Doxa Essence begint bij een simpel idee: een geur moet iets in je losmaken. Iets vertrouwds. Iets onverwachts. Iets dat je bijblijft.</p><button class="button dark" data-quiz>ONTDEK JOUW GEURKARAKTER <span>↗</span></button></div></section>
+    <section class="discovery"><p class="eyebrow">FOLLOW YOUR INSTINCT.</p><h2>WELKE GEUR<br>VERTELT JOUW VERHAAL?</h2><button class="text-link" data-quiz>DOE DE GEURWIJZER ↗</button></section>
+    <div class="values"><span>01 <strong>JOUW KARAKTER</strong></span><span>02 <strong>JOUW MOMENT</strong></span><span>03 <strong>JOUW ESSENCE</strong></span></div>
+  </main>
+  <footer><div class="footer-top"><p>LEAVE A LITTLE<br>OF YOURSELF BEHIND.</p><div><a href="#collectie">De collectie</a><a href="#verhaal">Ons verhaal</a><button data-quiz>Geurwijzer</button></div><div><span>Een nieuw hoofdstuk begint.</span><span>DOXA ESSENCE — PRIVATE PREVIEW</span></div></div><div class="footer-mark" aria-hidden="true">DOXA ESSENCE</div><div class="footer-bottom"><span>© 2026 DOXA ESSENCE</span><span>GEUREN MET KARAKTER.</span><a href="#">TERUG NAAR BOVEN ↑</a></div></footer>
+  <dialog id="detail-dialog" aria-labelledby="detail-title"><button class="close" aria-label="Sluiten">×</button><div id="detail-content"></div></dialog>
+  <dialog id="search-dialog" aria-labelledby="search-title"><button class="close" aria-label="Sluiten">×</button><p class="eyebrow">ONTDEK DE COLLECTIE</p><h2 id="search-title">WAT ZOEK JE?</h2><label for="search">Zoek op naam of geurnoot</label><input id="search" type="search" placeholder="Bijvoorbeeld amber, fris of Sola" autocomplete="off"><div id="search-results" aria-live="polite"></div></dialog>
+  <dialog id="quiz-dialog" aria-labelledby="quiz-title"><button class="close" aria-label="Sluiten">×</button><p class="eyebrow">JOUW GEURKARAKTER</p><h2 id="quiz-title">WELK GEVOEL<br>PAST BIJ JOU?</h2><p>Volg je eerste gevoel. Wij laten je een geurconcept ontdekken.</p><div class="quiz-options"><button data-choice="sola">01 <span>De warmte van de avondzon</span> ↗</button><button data-choice="nocte">02 <span>Een onvergetelijke nacht</span> ↗</button><button data-choice="pure">03 <span>Een frisse, nieuwe ochtend</span> ↗</button></div></dialog>
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>
