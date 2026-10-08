@@ -24,10 +24,11 @@ en geschikt voor browsergebruik; gebruik nooit een secret/service-role key in
 de website. Nieuwe databasetabellen moeten Row Level Security en passende
 policies krijgen voordat de website ze gebruikt.
 
-De homepage bevat een parfumcollectie als concept, productdetails, zoeken,
-filters en een geurwijzer. Namen, noten en verpakkingen zijn voorlopige
-voorbeelden. Er worden nog geen bestellingen of betalingen verwerkt.
-De eigen conceptbeelden en gebruikte prompts staan in `docs/visual-assets.md`.
+De homepage presenteert C1 — The Genesis, het merkverhaal en de geurnoten
+LIGHT, LIFE en EARTH. De huisstijl gebruikt #590000 en het originele logo.
+De productfoto is een stilstaand beeld uit de aangeleverde productfilm; de
+film kan op de Genesis-sectie worden afgespeeld. Er worden nog geen
+bestellingen of betalingen verwerkt. Zie `docs/visual-assets.md`.
 
 ## Privétoegang
 
@@ -36,6 +37,7 @@ of statische bestanden worden geleverd (`run_worker_first`). Alleen de SHA-256
 hash van de willekeurige code staat in de broncode. De code zelf staat lokaal
 in het door Git genegeerde `.tools/access-code` en wordt aan de eigenaar verstrekt.
 Een HttpOnly/Secure-cookie bewaart de toegang maximaal één dag in de browser.
+Alleen het merklogo is openbaar zodat het op de toegangspoort zichtbaar is.
 De uitlogknop verwijdert deze cookie. Beschermde reacties krijgen `no-store`.
 De GitHub-repository blijft zijn eigen ingestelde zichtbaarheid houden.
 

@@ -1,3 +1,10 @@
+# Huidige merk- en productbeelden
+
+- `public/brand/doxa-logo.png`: ongewijzigd origineel uit het aangeleverde visitekaartje `1.png`. De website toont het logo met een CSS-uitsnede; achtergrond #590000.
+- `public/images/the-genesis-product.jpg`: frame op 2,5 seconden uit de door de eigenaar aangeleverde `ScreenRecording_10-07-2026 21-34-58_1.mov`. Het product en de verpakking zijn niet opnieuw gegenereerd of geretoucheerd.
+- `public/video/the-genesis.mp4`: dezelfde productfilm, geconverteerd naar H.264, 24 fps, zonder audio, met faststart voor webgebruik. Handmatig afspelen, geen autoplay.
+- De eerdere gegenereerde conceptbeelden hieronder worden niet meer getoond.
+
 # Doxa Essence conceptbeelden
 
 Gemaakt met de ingebouwde Imagegen-tool. Dit zijn conceptverpakkingen, geen foto's van bestaande producten.

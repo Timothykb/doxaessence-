@@ -1,50 +1,66 @@
 import './style.css';
 export { supabase } from './supabase.js';
 
-const products = [
-  { id: 'sola', name: 'SOLA', index: 0, type: 'warm', mood: 'WARM. STRALEND. ONBEVANGEN.', notes: ['Bergamot', 'Oranjebloesem', 'Amber'], description: 'Het gevoel van zonlicht op je huid. Een warm geurconcept waarin sprankelende citrus overgaat in zachte bloemen en gouden amber.' },
-  { id: 'nocte', name: 'NOCTE', index: 1, type: 'deep', mood: 'DIEP. MAGNETISCH. ONVERGETELIJK.', notes: ['Zwarte peper', 'Cederhout', 'Vanille'], description: 'Voor het moment waarop de avond begint. Een donker, houtachtig geurconcept met kruidige spanning en een zachte, warme basis.' },
-  { id: 'pure', name: 'PURE', index: 2, type: 'fresh', mood: 'FRIS. ZACHT. HELEMAAL JIJ.', notes: ['Neroli', 'Witte thee', 'Musk'], description: 'Een frisse start, een helder gevoel. Een licht geurconcept waarin witte thee, zachte bloemen en musk dicht bij de huid blijven.' },
-];
-const grid = document.querySelector('#products');
-function photo(p) { return `<img class="product-photo" style="--index:${p.index}" src="/images/doxa-collection.png" alt="${p.name} conceptflacon van Doxa Essence" loading="lazy">`; }
-function renderProducts(filter = 'all') {
-  grid.innerHTML = products.filter(p => filter === 'all' || p.type === filter).map(p => `<article class="product-card"><button class="product-image" data-product="${p.id}" aria-label="Ontdek ${p.name}"><span class="product-tag">EAU DE PARFUM · CONCEPT</span>${photo(p)}<span class="round-arrow" aria-hidden="true">↗</span></button><div class="product-info"><div><h3>${p.name}</h3><p>${p.notes.join(' / ')}</p></div><span>BINNENKORT</span></div></article>`).join('');
+const layers = {
+  light: { number: '01', stage: 'THE OPENING', title: 'The warmth\nof light.', notes: 'Bergamot · Cardamom', copy: 'The moment darkness gave way to light.' },
+  life: { number: '02', stage: 'THE HEART', title: 'The promise\nof life.', notes: 'Fig · Fig Leaf · Soft Florals', copy: 'When water and earth took form, and life began.' },
+  earth: { number: '03', stage: 'THE FOUNDATION', title: 'The stillness\nof earth.', notes: 'Sandalwood · Cedarwood · Musk', copy: 'Fresh, warm, woody, and mysterious. Familiar, yet never ordinary.' },
+};
+const tabs = [...document.querySelectorAll('[data-note]')];
+function selectLayer(tab, focus = false) {
+  const layer = layers[tab.dataset.note];
+  tabs.forEach(button => { const selected = button === tab; button.setAttribute('aria-selected', String(selected)); button.tabIndex = selected ? 0 : -1; });
+  document.querySelector('#scent-panel').setAttribute('aria-labelledby', tab.id);
+  document.querySelector('.scent-number').textContent = layer.number;
+  document.querySelector('#note-stage').textContent = layer.stage;
+  document.querySelector('#note-title').textContent = layer.title;
+  document.querySelector('#note-list').textContent = layer.notes;
+  document.querySelector('#note-copy').textContent = layer.copy;
+  if (focus) tab.focus();
 }
-renderProducts();
+tabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectLayer(tab));
+  tab.addEventListener('keydown', event => {
+    let next;
+    if (['ArrowDown', 'ArrowRight'].includes(event.key)) next = (index + 1) % tabs.length;
+    if (['ArrowUp', 'ArrowLeft'].includes(event.key)) next = (index + tabs.length - 1) % tabs.length;
+    if (event.key === 'Home') next = 0;
+    if (event.key === 'End') next = tabs.length - 1;
+    if (next !== undefined) { event.preventDefault(); selectLayer(tabs[next], true); }
+  });
+});
 const dialogs = [...document.querySelectorAll('dialog')];
 function openDialog(dialog) { dialogs.forEach(d => d.close()); dialog.showModal(); document.body.classList.add('dialog-open'); }
 dialogs.forEach(dialog => {
   dialog.querySelector('.close').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => { if (!dialogs.some(d => d.open)) document.body.classList.remove('dialog-open'); });
-  dialog.addEventListener('click', e => { if (e.target === dialog) { const r = dialog.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close(); } });
+  dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
 });
-function showProduct(id) {
-  const p = products.find(p => p.id === id);
-  if (!p) return;
-  document.querySelector('#detail-content').innerHTML = `<div class="detail-photo">${photo(p)}</div><p class="eyebrow">${p.mood}</p><h2 id="detail-title">${p.name}</h2><p>${p.description}</p><div class="notes">${p.notes.map((note,i) => `<div><span>${['TOPNOOT','HARTNOOT','BASISNOOT'][i]}</span><strong>${note}</strong></div>`).join('')}</div><p class="concept-note">Dit is een geur- en verpakkingsconcept. De definitieve samenstelling, inhoud en prijs volgen later.</p><span class="detail-state">BINNENKORT — NOG NIET TE BESTELLEN</span>`;
-  openDialog(document.querySelector('#detail-dialog'));
-}
-document.addEventListener('click', e => {
-  const product = e.target.closest('[data-product]');
-  if (product) showProduct(product.dataset.product);
-  const choice = e.target.closest('[data-choice]');
-  if (choice) showProduct(choice.dataset.choice);
-  if (e.target.closest('[data-quiz]')) openDialog(document.querySelector('#quiz-dialog'));
-});
-document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
-  document.querySelectorAll('[data-filter]').forEach(b => { b.classList.toggle('active', b === button); b.setAttribute('aria-pressed', String(b === button)); });
-  renderProducts(button.dataset.filter);
-}));
+document.querySelector('#all-notes').addEventListener('click', () => openDialog(document.querySelector('#notes-dialog')));
 const search = document.querySelector('#search');
-function searchProducts() {
-  const query = search.value.toLocaleLowerCase('nl').trim();
-  const matches = products.filter(p => `${p.name} ${p.mood} ${p.notes.join(' ')} ${p.description}`.toLocaleLowerCase('nl').includes(query));
-  document.querySelector('#search-results').innerHTML = matches.length ? matches.map(p => `<button class="search-result" data-product="${p.id}"><strong>${p.name}</strong><span>${p.notes.join(' · ')} ↗</span></button>`).join('') : '<p style="margin-top:25px">Geen geur gevonden. Probeer bijvoorbeeld amber, vanille of musk.</p>';
+const searchEntries = [
+  { title: 'C1 — The Genesis', description: 'The beginning of everything.', target: '#genesis', keywords: 'genesis chapter beginning perfume fragrance story light life earth bergamot cardamom fig fig leaf soft florals sandalwood cedarwood musk scent' },
+  { title: 'About Doxa Essence', description: 'Can a story have a scent?', target: '#about', keywords: 'about doxa essence story greek glory honor splendor memory emotion fragrance house' },
+  { title: 'A Story You Can Wear', description: 'The Genesis is only the beginning.', target: '#your-story', keywords: 'wear story chapters beginning what are you wearing thank you' },
+];
+function renderSearch() {
+  const query = search.value.toLowerCase().trim();
+  const results = searchEntries.filter(entry => `${entry.title} ${entry.keywords}`.toLowerCase().includes(query));
+  const container = document.querySelector('#search-results');
+  container.replaceChildren();
+  if (!results.length) { const empty = document.createElement('p'); empty.className = 'search-empty'; empty.textContent = 'No story found. Try Genesis, fig or sandalwood.'; container.append(empty); return; }
+  results.forEach(entry => {
+    const link = document.createElement('a'); link.className = 'search-result'; link.href = entry.target;
+    const title = document.createElement('strong'); title.textContent = entry.title;
+    const description = document.createElement('span'); description.textContent = `${entry.description} ↗`;
+    link.append(title, description); link.addEventListener('click', () => document.querySelector('#search-dialog').close()); container.append(link);
+  });
 }
-document.querySelector('.search-open').addEventListener('click', () => { openDialog(document.querySelector('#search-dialog')); searchProducts(); search.focus(); });
-search.addEventListener('input', searchProducts);
+document.querySelector('.search-open').addEventListener('click', () => { openDialog(document.querySelector('#search-dialog')); renderSearch(); search.focus(); });
+search.addEventListener('input', renderSearch);
 const menu = document.querySelector('.mobile-menu');
-const nav = document.querySelector('#navigation');
-menu.addEventListener('click', () => { const open = nav.classList.toggle('open'); menu.setAttribute('aria-expanded',String(open)); menu.setAttribute('aria-label',open ? 'Menu sluiten':'Menu openen'); });
-nav.addEventListener('click', e => { if (e.target.closest('a,button')) { nav.classList.remove('open'); menu.setAttribute('aria-expanded','false'); menu.setAttribute('aria-label','Menu openen'); } });
+const navigation = document.querySelector('#navigation');
+function closeMenu() { navigation.classList.remove('open'); menu.setAttribute('aria-expanded', 'false'); menu.setAttribute('aria-label', 'Open menu'); }
+menu.addEventListener('click', () => { const open = navigation.classList.toggle('open'); menu.setAttribute('aria-expanded', String(open)); menu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); });
+navigation.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
