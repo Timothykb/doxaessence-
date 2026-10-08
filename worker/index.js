@@ -8,7 +8,7 @@ async function valid(code) {
 }
 
 function headers(extra = {}) {
-  return { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'Referrer-Policy': 'no-referrer', ...extra };
+  return { 'Cache-Control': 'private, no-store', 'X-Robots-Tag': 'noindex, nofollow', 'Referrer-Policy': 'same-origin', ...extra };
 }
 
 function login(error = false) {
