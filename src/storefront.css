@@ -1,0 +1,79 @@
+/* Doxa storefront: bold campaign hierarchy, rounded frames, warm brand palette. */
+:root{--paper:#fffcf6;--rose:#e9d8cd}
+body{background:var(--paper)}
+.announcement{justify-content:center;gap:16px;height:34px;font-size:9px;font-weight:700;letter-spacing:.03em;background:var(--cream)}
+.header{height:90px;border-radius:0 0 28px 28px;padding:0 4%;border:0}
+.header nav{gap:22px;align-items:center}
+.header nav a{font-size:10px;font-weight:700}
+.header nav .nav-pill{background:var(--cream);color:var(--wine);padding:11px 19px;border-radius:30px;border:0}
+.header .brand-logo{width:145px}
+.hero{display:block;position:relative;margin:18px 3.75% 0;border-radius:30px;min-height:0;height:590px;padding:0;background:var(--wine);isolation:isolate}
+.hero-image{position:absolute;right:0;top:0;width:73%;height:100%;object-fit:cover;object-position:center;z-index:-2;background:#c5b7a3}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#590000 0%,#590000f2 22%,#59000070 44%,transparent 66%);z-index:-1}
+.hero-copy{position:absolute;inset:58px auto auto 5.5%;padding:0;width:48%;transform:none}
+.hero h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(64px,7.3vw,110px);font-weight:800;line-height:.94;letter-spacing:-.055em;margin:26px 0 22px}
+.hero h1 em{font-style:normal;font-weight:800}
+.hero-tagline{font:18px/1.4 Arial,Helvetica,sans-serif}
+.button{border-radius:30px;font-weight:700;font-size:11px;letter-spacing:.015em;padding:17px 25px;min-height:49px}
+.hero .button{margin-top:35px}
+.hero-bottom{left:5.5%;right:5.5%;bottom:28px;font-weight:600;letter-spacing:.05em}
+.launch-intro{text-align:center;padding:76px 22px 64px;max-width:740px;margin:auto}
+.launch-intro h2,.collection-heading h2{font:800 clamp(30px,3.4vw,48px)/1.03 Arial,sans-serif;letter-spacing:-.045em;margin:18px 0}
+.launch-intro>p:not(.eyebrow){font-size:15px;line-height:1.75;max-width:500px;margin:auto;color:var(--muted)}
+.launch-intro .button{margin-top:25px}
+.chapter-collection{padding:0 3.75% 75px}
+.collection-heading{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:25px}
+.collection-heading h2{margin:0;font-size:36px}
+.collection-heading>span{font-size:10px;font-weight:700}
+.chapter-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card-visual{height:350px;position:relative;border-radius:24px;overflow:hidden;background:var(--rose);transition:transform .25s}
+.chapter-card:hover .card-visual{transform:translateY(-5px)}
+.card-badge{position:absolute;top:20px;left:20px;border-radius:25px;padding:9px 12px;font-size:8px;font-weight:700;letter-spacing:.06em;background:var(--cream);color:var(--wine);z-index:1}
+.product-card img{height:100%;width:100%;object-fit:cover;object-position:center}
+.notes-card .card-visual{background:var(--wine);color:var(--cream);padding:88px 28px 45px}
+.note-art{font-size:clamp(36px,4.3vw,65px);font-weight:800;line-height:.95;letter-spacing:-.045em}
+.card-bottom{position:absolute;left:28px;bottom:25px;font-size:8px;letter-spacing:.08em}
+.story-card .card-visual{background:#e7d4c7;display:flex;align-items:center;padding:35px}
+.story-art{font:40px/1.12 Georgia,serif;letter-spacing:-.05em}
+.card-info{padding:19px 3px}
+.card-info h3{font-size:15px;letter-spacing:-.025em;margin-bottom:9px}
+.card-info>span{font-size:9px;letter-spacing:.04em}
+.genesis{margin:0 3.75% 65px;border-radius:28px;overflow:hidden;background:var(--cream);grid-template-columns:1fr 1fr}
+.genesis-image{background:#e5dbcd;padding:0 0 32px;justify-content:flex-start}
+.product-film video{aspect-ratio:1.2;object-fit:contain;background:#c5b7a3}
+.film-caption{font-weight:700}
+.film-quote{font:800 49px/.98 Arial,sans-serif;text-transform:uppercase;padding-top:25px}
+.film-quote em{font-style:normal}
+.genesis-copy{padding:48px 9%}
+.genesis-copy h2{font:800 clamp(32px,3.5vw,52px)/.98 Arial,sans-serif;text-transform:uppercase}
+.genesis-copy h2 em{font-style:normal}
+.genesis-copy .prose p{font-size:13px;line-height:1.75}
+.scent{margin:0 3.75% 70px;border-radius:28px;padding:55px 5%}
+.scent-heading h2{font:800 clamp(38px,4.5vw,66px)/.98 Arial,sans-serif;text-transform:uppercase}
+.scent-heading h2 em{font-style:normal}
+.scent-heading>p{font:15px/1.7 Arial,sans-serif;max-width:300px}
+.scent-experience{display:block;border:0;margin-top:35px;padding:0}
+.scent-tabs{flex-direction:row;gap:12px}
+.scent-tabs button{border:1px solid #f5f1e86b;border-radius:40px;padding:15px 22px;font:bold 16px Arial,sans-serif;opacity:1;gap:15px;justify-content:center}
+.scent-tabs button[aria-selected=true]{background:var(--cream);color:var(--wine)}
+.scent-tabs button>span:last-child{display:none}
+#scent-panel{margin-top:30px;border-radius:20px;background:#ffffff09;padding:30px;min-height:240px}
+.scent-number{right:40px;top:0;opacity:.12;font-size:220px}
+#note-title{font:bold 35px/1.05 Arial,sans-serif}
+.scent-summary{font:18px/1.5 Arial,sans-serif}
+.about{padding:0 7% 75px}
+.section-heading h2,.wear h2{font:800 clamp(40px,5.5vw,75px)/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:-.055em}
+.section-heading h2 em,.wear h2 em{font-style:normal}
+.about-layout{margin-top:35px;gap:10%}
+.verse{background:var(--cream);border:0;margin:0 3.75%;border-radius:28px;padding:48px 20px}
+.verse blockquote{font-size:32px}
+.wear{background:var(--paper);padding:65px 7%}
+.wear-layout{gap:10%}
+.chapter-divider{background:var(--cream);border:0;padding:28px 4%;font-weight:700}
+footer{border-radius:28px 28px 0 0}
+.footer-top>div:first-child>p{font:800 36px/1 Arial,sans-serif;text-transform:uppercase}
+.footer-top>div:first-child>p em{font-style:normal}
+.footer-logo{width:min(600px,80%)}
+dialog{border-radius:24px}
+@media(max-width:1050px){.hero{height:540px}.hero-copy{width:53%;top:48px}.hero h1{font-size:75px}.card-visual{height:290px}.story-art{font-size:32px}.film-quote{font-size:38px}.genesis-copy{padding:36px 7%}}
+@media(max-width:700px){.announcement{font-size:8px;height:28px}.announcement>span{display:none!important}.header{height:80px;border-radius:0 0 20px 20px}.header .brand-logo{width:130px}.header nav{top:80px;border-radius:0 0 20px 20px}.header nav a{font-size:12px}.hero{margin:12px 14px 0;height:620px;border-radius:23px}.hero-copy{left:25px;right:20px;top:32px;bottom:auto;width:auto}.hero h1{font-size:65px;margin:19px 0 15px}.hero-tagline{font-size:15px}.hero .button{margin-top:22px;font-size:9px;padding:15px 20px}.hero-image{top:auto;bottom:0;width:100%;height:295px;object-fit:cover}.hero:after{background:linear-gradient(180deg,#590000 0%,#590000 49%,#59000000 64%)}.hero-bottom{position:absolute;bottom:18px;left:25px;right:25px;padding:0;text-shadow:0 1px 8px #000}.hero-bottom>a{display:none}.launch-intro{padding:48px 24px}.launch-intro h2{font-size:32px}.launch-intro>p:not(.eyebrow){font-size:14px}.chapter-collection{padding:0 14px 35px}.collection-heading h2{font-size:29px}.collection-heading>span{font-size:8px}.chapter-cards{grid-template-columns:1fr;gap:12px}.card-visual{height:320px}.card-info{padding:17px 6px 23px}.notes-card .card-visual{padding:80px 30px}.note-art{font-size:58px}.story-art{font-size:43px}.genesis{margin:0 14px 40px;border-radius:23px;grid-template-columns:1fr}.product-film video{aspect-ratio:1206/664}.genesis-image{padding-bottom:25px}.film-quote{font-size:38px}.genesis-copy{padding:32px 25px 40px}.genesis-copy h2{font-size:38px}.scent{margin:0 14px 45px;border-radius:23px;padding:35px 25px}.scent-heading h2{font-size:47px}.scent-tabs{gap:6px}.scent-tabs button{padding:13px 9px;font-size:12px;gap:7px}.scent-tabs button>span{font-size:7px}#scent-panel{padding:25px 15px;min-height:270px}#note-title{font-size:32px}.scent-number{right:15px;font-size:180px}.about{padding:0 25px 45px}.section-heading h2,.wear h2{font-size:43px}.verse{margin:0 14px;padding:35px 22px}.verse blockquote{font-size:27px}.wear{padding:45px 25px}.wear-answer{font-size:34px}.footer-logo{width:90%}}

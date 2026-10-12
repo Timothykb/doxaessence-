@@ -1,4 +1,5 @@
 import './style.css';
+import './storefront.css';
 export { supabase } from './supabase.js';
 
 const layers = {
