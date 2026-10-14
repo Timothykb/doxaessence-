@@ -45,3 +45,14 @@ De GitHub-repository blijft zijn eigen ingestelde zichtbaarheid houden.
 voor een volledige lokale preview met de toegangspoort. Geef in deze projectchat
 aan welke pagina's, stijl of functies je wilt toevoegen; na een push naar `main`
 publiceert Cloudflare de wijzigingen automatisch.
+
+
+## Supabase content
+De tabel `public.scent_layers` bevat de drie Genesis-geurlagen. De website leest
+deze eenmaal per paginabezoek en gebruikt de inhoud voor de tabs en het
+notenoverzicht. Bij fouten of na vijf seconden blijft de lokale tekst zichtbaar.
+Bewerk de teksten als projecteigenaar in Supabase Table Editor.
+Bezoekers hebben alleen SELECT-rechten, afgedwongen met RLS; geen schrijfrechten.
+Het schema en de startinhoud staan in `supabase/migrations/20261014_genesis_scent_layers.sql`.
+Dit is echte contentlevering, geen periodieke keepalive. Bij weinig bezoekers kan
+het gratis Supabase-project alsnog automatisch pauzeren.

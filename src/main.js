@@ -1,6 +1,6 @@
 import './style.css';
 import './storefront.css';
-export { supabase } from './supabase.js';
+import { supabase } from './supabase.js';
 
 const layers = {
   light: { number: '01', stage: 'THE OPENING', title: 'The warmth\nof light.', notes: 'Bergamot · Cardamom', copy: 'The moment darkness gave way to light.' },
@@ -30,6 +30,29 @@ tabs.forEach((tab, index) => {
     if (next !== undefined) { event.preventDefault(); selectLayer(tabs[next], true); }
   });
 });
+// One real content query per page load. Local copy remains available on failure.
+async function loadScentLayers() {
+  try {
+    const { data, error } = await supabase.from('scent_layers')
+      .select('slug,number,stage,title,notes,copy')
+      .abortSignal(AbortSignal.timeout(5000));
+    if (error || !Array.isArray(data)) return;
+    const fields = ['number', 'stage', 'title', 'notes', 'copy'];
+    if (data.length !== 3 || !Object.keys(layers).every(slug =>
+      data.some(row => row.slug === slug && fields.every(field =>
+        typeof row[field] === 'string' && row[field].trim() && row[field].length <= 1000)))) return;
+    for (const row of data) layers[row.slug] = row;
+    selectLayer(tabs.find(tab => tab.getAttribute('aria-selected') === 'true') || tabs[0]);
+    document.querySelectorAll('#notes-dialog .note-row p').forEach((node, index) => {
+      node.textContent = layers[tabs[index].dataset.note].notes;
+    });
+    document.querySelector('#scent-panel').dataset.contentSource = 'supabase';
+  } catch {
+    // Network interruption or a paused project must not hide the fragrance notes.
+  }
+}
+loadScentLayers();
+
 const dialogs = [...document.querySelectorAll('dialog')];
 function openDialog(dialog) { dialogs.forEach(d => d.close()); dialog.showModal(); document.body.classList.add('dialog-open'); }
 dialogs.forEach(dialog => {
