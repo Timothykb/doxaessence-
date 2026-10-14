@@ -65,3 +65,18 @@ transparency, preserve cap, glass, proportions, label text and colors.
 The scent section cycles top/heart/base every 6.5 seconds while visible, with a
 pause control, manual tabs, keyboard support and reduced-motion support.
 Updated scent content: `supabase/migrations/20261014_genesis_updated_notes.sql`.
+
+## Community
+`/community/` has a testimonial/review form and a paginated approved-story feed.
+No fictional customer reviews are seeded. Empty-state cards are writing prompts.
+Apply `supabase/migrations/20261014_community_stories.sql` to initialize storage.
+Visitors can insert only name, kind, body, rating and consent. Status defaults to
+`pending`; RLS exposes only `approved` rows. Visitors cannot approve, edit or delete.
+
+Moderation: open Supabase → Table Editor → `community_stories`, filter `status =
+pending`, read the submission, then set status to `approved` to publish or `rejected`
+to withhold. Never publish the record named `Doxa systeemtest` (integration test).
+Only publish appropriate submissions; check personal information and consent.
+The form explains publication and gives info@doxaessence.com for removal requests.
+The existing private website access gate still applies to this page. Public read
+access to approved stories is intentional; pending submissions remain private.
