@@ -56,3 +56,12 @@ Bezoekers hebben alleen SELECT-rechten, afgedwongen met RLS; geen schrijfrechten
 Het schema en de startinhoud staan in `supabase/migrations/20261014_genesis_scent_layers.sql`.
 Dit is echte contentlevering, geen periodieke keepalive. Bij weinig bezoekers kan
 het gratis Supabase-project alsnog automatisch pauzeren.
+
+## Product presentation
+The supplied packshot is `public/images/genesis-packshot.png`. The isolated bottle
+is `public/images/genesis-bottle.png`, made with the built-in imagegen tool.
+Prompt: Extract only the perfume bottle, remove box and background, use genuine
+transparency, preserve cap, glass, proportions, label text and colors.
+The scent section cycles top/heart/base every 6.5 seconds while visible, with a
+pause control, manual tabs, keyboard support and reduced-motion support.
+Updated scent content: `supabase/migrations/20261014_genesis_updated_notes.sql`.

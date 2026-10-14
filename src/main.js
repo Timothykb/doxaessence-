@@ -3,9 +3,9 @@ import './storefront.css';
 import { supabase } from './supabase.js';
 
 const layers = {
-  light: { number: '01', stage: 'THE OPENING', title: 'The warmth\nof light.', notes: 'Bergamot · Cardamom', copy: 'The moment darkness gave way to light.' },
-  life: { number: '02', stage: 'THE HEART', title: 'The promise\nof life.', notes: 'Fig · Fig Leaf · Soft Florals', copy: 'When water and earth took form, and life began.' },
-  earth: { number: '03', stage: 'THE FOUNDATION', title: 'The stillness\nof earth.', notes: 'Sandalwood · Cedarwood · Musk', copy: 'Fresh, warm, woody, and mysterious. Familiar, yet never ordinary.' },
+  light: { number: '01', stage: 'TOPNOTEN / LIGHT', title: 'The warmth\nof light.', notes: 'Bergamot · Roze peper · Kardemom', copy: 'The moment darkness gave way to light.' },
+  life: { number: '02', stage: 'HARTNOTEN / LIFE', title: 'The promise\nof life.', notes: 'Vijgenblad · Vijg · Iris · Oranjebloesem', copy: 'When water and earth took form, and life began.' },
+  earth: { number: '03', stage: 'BASISNOTEN / EARTH', title: 'The stillness\nof earth.', notes: 'Sandelhout · Cederhout · Ambrette-musk · Zachte amber · Een vleugje vanille', copy: 'Fresh, warm, woody, and mysterious. Familiar, yet never ordinary.' },
 };
 const tabs = [...document.querySelectorAll('[data-note]')];
 function selectLayer(tab, focus = false) {
@@ -17,19 +17,46 @@ function selectLayer(tab, focus = false) {
   document.querySelector('#note-title').textContent = layer.title;
   document.querySelector('#note-list').textContent = layer.notes;
   document.querySelector('#note-copy').textContent = layer.copy;
+  document.querySelector('.scent-stage').dataset.layer = tab.dataset.note;
+  const chips = document.querySelector('.ingredient-chips');
+  chips.replaceChildren(...layer.notes.split(' · ').map((note, index) => {
+    const chip = document.createElement('span'); chip.textContent = note;
+    chip.style.setProperty('--i', index); return chip;
+  }));
   if (focus) tab.focus();
 }
 tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => selectLayer(tab));
+  tab.addEventListener('click', () => { pauseMotion(); selectLayer(tab); });
   tab.addEventListener('keydown', event => {
     let next;
     if (['ArrowDown', 'ArrowRight'].includes(event.key)) next = (index + 1) % tabs.length;
     if (['ArrowUp', 'ArrowLeft'].includes(event.key)) next = (index + tabs.length - 1) % tabs.length;
     if (event.key === 'Home') next = 0;
     if (event.key === 'End') next = tabs.length - 1;
-    if (next !== undefined) { event.preventDefault(); selectLayer(tabs[next], true); }
+    if (next !== undefined) { event.preventDefault(); pauseMotion(); selectLayer(tabs[next], true); }
   });
 });
+// Advance only while the scent section is visible; manual selection pauses the tour.
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const motionButton = document.querySelector('#scent-motion');
+let motionPaused = motionPreference.matches;
+let scentVisible = false;
+function syncMotion() {
+  motionButton.setAttribute('aria-pressed', String(motionPaused));
+  motionButton.textContent = motionPaused ? 'Play animation' : 'Pause animation';
+  document.querySelector('.scent-stage').classList.toggle('motion-paused', motionPaused || !scentVisible || document.hidden);
+}
+function pauseMotion() { motionPaused = true; syncMotion(); }
+motionButton.addEventListener('click', () => { motionPaused = !motionPaused; syncMotion(); });
+motionPreference.addEventListener('change', () => { motionPaused = motionPreference.matches; syncMotion(); });
+new IntersectionObserver(entries => { scentVisible = entries[0].isIntersecting; syncMotion(); }, { threshold: .25 }).observe(document.querySelector('.scent-stage'));
+document.addEventListener('visibilitychange', syncMotion);
+setInterval(() => {
+  if (motionPaused || !scentVisible || document.hidden) return;
+  const current = tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true');
+  selectLayer(tabs[(current + 1) % tabs.length]);
+}, 6500);
+syncMotion();
 // One real content query per page load. Local copy remains available on failure.
 async function loadScentLayers() {
   try {
@@ -63,7 +90,7 @@ dialogs.forEach(dialog => {
 document.querySelector('#all-notes').addEventListener('click', () => openDialog(document.querySelector('#notes-dialog')));
 const search = document.querySelector('#search');
 const searchEntries = [
-  { title: 'C1 — The Genesis', description: 'The beginning of everything.', target: '#genesis', keywords: 'genesis chapter beginning perfume fragrance story light life earth bergamot cardamom fig fig leaf soft florals sandalwood cedarwood musk scent' },
+  { title: 'C1 — The Genesis', description: 'The beginning of everything.', target: '#genesis', keywords: 'genesis chapter beginning perfume fragrance story light life earth bergamot cardamom fig fig leaf pink pepper iris orange blossom ambrette amber vanilla roze peper kardemom vijgenblad vijg oranjebloesem sandelhout cederhout vanille sandalwood cedarwood musk scent' },
   { title: 'About Doxa Essence', description: 'Can a story have a scent?', target: '#about', keywords: 'about doxa essence story greek glory honor splendor memory emotion fragrance house' },
   { title: 'A Story You Can Wear', description: 'The Genesis is only the beginning.', target: '#your-story', keywords: 'wear story chapters beginning what are you wearing thank you' },
 ];
