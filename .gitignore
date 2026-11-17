@@ -7,3 +7,4 @@ dist/
 .tools/
 .pnpm-store/
 dist-demo/
+.demo-tmp/
