@@ -120,14 +120,18 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 document.querySelectorAll('[data-newsletter]').forEach(form => {
   const status = form.querySelector('.form-status');
   const email = form.elements.email;
+  const firstName = form.elements.first_name;
   const consent = form.elements.consent;
   const button = form.querySelector('[type=submit]');
   const say = (state, text) => { status.dataset.state = state; status.textContent = text; };
   email.addEventListener('input', () => email.removeAttribute('aria-invalid'));
+  firstName.addEventListener('input', () => firstName.removeAttribute('aria-invalid'));
   form.addEventListener('submit', async event => {
     event.preventDefault();
     if (form.elements.company.value) return;
     const value = email.value.trim().toLowerCase();
+    const name = firstName.value.trim();
+    if (!name) { firstName.setAttribute('aria-invalid', 'true'); firstName.focus(); say('error', 'Vul je voornaam in.'); return; }
     if (!emailPattern.test(value)) { email.setAttribute('aria-invalid', 'true'); email.focus(); say('error', 'Vul een geldig e-mailadres in, bijvoorbeeld naam@voorbeeld.nl.'); return; }
     if (!consent.checked) { consent.focus(); say('error', 'Vink aan dat je de nieuwsbrief wilt ontvangen.'); return; }
     if (button.dataset.loading === 'true') return;
@@ -135,12 +139,15 @@ document.querySelectorAll('[data-newsletter]').forEach(form => {
     say('pending', 'Je inschrijving wordt opgeslagen…');
     try {
       const { supabase } = await import('./supabase.js');
-      const { error } = await supabase.from('newsletter_subscribers')
-        .insert({ email: value, consent: true, source: location.pathname.slice(0, 80) })
-        .abortSignal(AbortSignal.timeout(12000));
-      if (error && error.code !== '23505') throw error;
+      // One list (doxa_launch_list); the database ignores duplicates and
+      // re-activates an earlier unsubscribe. Success is shown only after the
+      // server confirms the sign-up was stored.
+      const { error } = await supabase.rpc('subscribe_doxa_newsletter', {
+        email_address: value, first_name: name, email_consent: true, signup_source: location.pathname.slice(0, 80),
+      }).abortSignal(AbortSignal.timeout(12000));
+      if (error) throw error;
       form.reset();
-      say('success', error ? 'Dit e-mailadres staat al op onze lijst. Je hoort van ons.' : 'Dank je wel. Je inschrijving is opgeslagen — je hoort van ons bij het volgende hoofdstuk.');
+      say('success', `Dank je wel, ${name}. Je inschrijving is opgeslagen — je ontvangt een welkomstmail.`);
     } catch {
       say('error', 'Je inschrijving kon niet worden opgeslagen. Probeer het later opnieuw of mail info@doxaessence.com.');
     } finally { button.dataset.loading = 'false'; button.disabled = false; }

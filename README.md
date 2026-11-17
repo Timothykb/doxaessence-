@@ -61,10 +61,21 @@ De geurnoten staan sinds de nieuwe opbouw (LIGHT top, EARTH hart, LIFE basis) al
 vaste tekst in de HTML. De oude tabel `public.scent_layers` bevat nog de vorige
 noten en wordt niet meer gelezen.
 
-Nieuwsbrief: `supabase/migrations/20261117_newsletter_subscribers.sql` maakt de
-tabel `newsletter_subscribers` (alleen INSERT voor bezoekers, niemand kan de lijst
-via de API lezen). Zolang deze migratie niet is toegepast, toont het formulier een
-foutmelding en nooit een onterechte succesmelding.
+Nieuwsbrief: het formulier (voornaam, e-mail, toestemming) roept
+`subscribe_doxa_newsletter` aan en schrijft naar de bestaande lijst
+`doxa_launch_list`. Daardoor gaat ook de bestaande welkomstmail mee. Dubbele
+adressen worden genegeerd, en wie zich eerder afmeldde wordt opnieuw actief.
+Succes verschijnt pas als de database de inschrijving bevestigt. Elke inschrijving
+heeft een `unsubscribe_token`. De welkomstmail krijgt automatisch de link
+`https://doxaessence.com/afmelden?token=…` (of vult `{{unsubscribe_url}}` in het
+sjabloon). De Worker serveert `/afmelden` publiek, ook achter de toegangspoort,
+en meldt pas af na een klik op de knop. Afgemelde adressen krijgen geen
+welkomstmail meer. Zie `supabase/migrations/20261117_launch_list_newsletter.sql`
+(toegepast op 17-11-2026).
+
+Pre-order: betaling direct bij bestellen, € 7,00 verzendkosten (alleen
+Nederland), prijzen inclusief btw, verwachte verzending januari 2027. Betalen
+blijft uitgeschakeld tot de annulerings- en retourvoorwaarden er zijn.
 
 ## 3D-hero
 `src/hero3d.js` (three.js, WebGL) gebruikt de aangeleverde productfoto als flacon.

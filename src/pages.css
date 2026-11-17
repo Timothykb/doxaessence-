@@ -102,6 +102,7 @@ fieldset[disabled] { opacity: .55; }
 .sum-rows div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .sum-rows dd { margin: 0; text-align: right; }
 .sum-total { font: 400 26px/1.2 var(--serif); border-bottom: 0 !important; }
+.sum-rows dt small { color: var(--muted); font-size: 12px; }
 .sum-total small { display: block; font: 500 12px/1.4 var(--sans); color: var(--muted); }
 .sum-btn { width: 100%; margin: 12px 0 12px; }
 .summary .text-link { margin-top: 16px; font-size: 12px; }

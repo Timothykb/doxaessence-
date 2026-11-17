@@ -46,18 +46,18 @@ Fallbacks: bij verminderde beweging, zonder WebGL of bij een fout blijft de stat
 De PDF “Alle geurnoten” noemt “Iriswortel”, de tabel “Een vleugje iris”. De site volgt de tabel. De afbeeldingen in die PDF komen van externe websites en worden niet gebruikt.
 
 ## 6. Ontbrekende gegevens, assets en integraties
-**Commercieel (verplicht vóór echte verkoop)**
-- Betaalmoment, verwachte verzendperiode, verzendkosten en verzendlanden
-- Annulerings- en retourvoorwaarden, inclusief herroepingsrecht
-- Of prijzen inclusief btw zijn, plus bedrijfsgegevens (KvK, btw-nummer, adres), algemene voorwaarden en privacyverklaring
-- Een betaal-/webshopintegratie (bijvoorbeeld Shopify, Mollie of Stripe). Tot die er is, blijft de pre-orderknop uitgeschakeld en is de bevestigingspagina alleen een voorbeeld.
+**Ingevuld (17-11-2026):** betaling direct bij bestellen, € 7,00 verzendkosten (alleen Nederland), prijzen inclusief btw, verwachte verzending januari 2027, Over mij (Timothy), nieuwsbrief via `doxa_launch_list` met afmeldlink.
 
-**Content**
-- Over mij: naam, korte introductie, een persoonlijk moment en de betekenis van Genesis (gemarkeerd met invulvelden)
+**Nog nodig vóór betalen wordt geactiveerd**
+- Annulerings- en retourvoorwaarden, inclusief herroepingsrecht
+- Algemene voorwaarden, privacyverklaring en bedrijfsgegevens (KvK, adres)
+- Betaalkoppeling: in Supabase bestaat al een checkoutflow (`begin_doxa_checkout`, `bind_doxa_payment`, `finalize_doxa_payment`, `doxa_checkout_settings.enabled = false`), maar de server-code die die flow aanstuurt staat niet in deze repository. Een live betaalsleutel hoort nooit in de websitecode. Zet hem als geheim op de server (Cloudflare `wrangler secret put` of als Supabase-secret).
+
+**Content en assets**
 - Beschrijving van de bevestigde verpakking
 - Updates over productie en levering voor de communitytijdlijn
+- Een productfoto in hogere resolutie, of een foto zonder dop met de echte verstuiver
+- Uiteindelijk: een 3D-model (glTF) van de flacon voor de realistische 3D-hero uit de briefing. De huidige hero gebruikt de productfoto als tijdelijke oplossing.
 
-**Technisch**
-- Supabase-migratie `20261117_newsletter_subscribers.sql` toepassen, inclusief een privacyverklaring en een afmeldproces
-- Een productfoto in hogere resolutie (de huidige is 546 × 1208 px) voor een scherpere hero op grote schermen. Een foto zonder dop, waarop de echte verstuiver te zien is, kan het gemodelleerde exemplaar vervangen. Optioneel: een 360°-reeks of 3D-model voor echte rotatie.
-- Openbare lancering: de toegangspoort in `worker/index.js` uitzetten wanneer de site live moet
+**Livegang**
+- De toegangspoort in `worker/index.js` uitzetten zodra de site openbaar mag

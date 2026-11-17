@@ -2,6 +2,7 @@ import './site.js';
 import './pages.css';
 
 const PRICE_CENTS = 8995;
+const SHIPPING_CENTS = 700; // flat rate, Netherlands only
 const euro = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' });
 const qty = document.querySelector('#qty');
 const clampQty = value => Math.min(99, Math.max(1, Math.round(Number(value) || 1)));
@@ -10,7 +11,7 @@ function render() {
   const subtotal = euro.format((PRICE_CENTS * n) / 100);
   document.querySelector('[data-sum-qty]').textContent = n;
   document.querySelector('[data-sum-sub]').textContent = subtotal;
-  document.querySelector('[data-sum-total]').textContent = subtotal;
+  document.querySelector('[data-sum-total]').textContent = euro.format((PRICE_CENTS * n + SHIPPING_CENTS) / 100);
   try { sessionStorage.setItem('doxa-preorder-qty', String(n)); } catch {}
 }
 document.querySelectorAll('[data-qty]').forEach(button => button.addEventListener('click', () => {
