@@ -24,11 +24,20 @@ en geschikt voor browsergebruik; gebruik nooit een secret/service-role key in
 de website. Nieuwe databasetabellen moeten Row Level Security en passende
 policies krijgen voordat de website ze gebruikt.
 
-De homepage presenteert C1 — The Genesis, het merkverhaal en de geurnoten
-LIGHT, LIFE en EARTH. De huisstijl gebruikt #590000 en het originele logo.
-De productfoto is een stilstaand beeld uit de aangeleverde productfilm; de
-film kan op de Genesis-sectie worden afgespeeld. Er worden nog geen
-bestellingen of betalingen verwerkt. Zie `docs/visual-assets.md`.
+Paginastructuur (multi-page Vite, gedeelde header/footer/nieuwsbrief in `partials/`):
+
+| Pad | Doel |
+| --- | --- |
+| `/` | 3D-hero, introductie, geurreis LIGHT → EARTH → LIFE, product, ontstaan, oprichter, community, nieuwsbrief, pre-order |
+| `/the-genesis/` | Productpagina met alle geurnoten, inspiratie en praktische vragen |
+| `/pre-order/` | Pre-order **prototype**: besteloverzicht, geen betaling, geen gesimuleerde aankoop |
+| `/pre-order/bevestiging/` | Voorbeeld van de bevestigingspagina (duidelijk gelabeld) |
+| `/ons-verhaal/` | Merkverhaal met scrollgekoppelde tekstmarkering |
+| `/over-mij/` | Oprichterspagina (ik-vorm, invulplaatsen voor biografie) |
+| `/community/` | Campagne, achter de schermen en gemodereerde verhalen |
+
+Concept, storyboard en de lijst met ontbrekende gegevens: `docs/website-concept.md`.
+Er worden nog geen bestellingen of betalingen verwerkt.
 
 ## Privétoegang
 
@@ -48,23 +57,20 @@ publiceert Cloudflare de wijzigingen automatisch.
 
 
 ## Supabase content
-De tabel `public.scent_layers` bevat de drie Genesis-geurlagen. De website leest
-deze eenmaal per paginabezoek en gebruikt de inhoud voor de tabs en het
-notenoverzicht. Bij fouten of na vijf seconden blijft de lokale tekst zichtbaar.
-Bewerk de teksten als projecteigenaar in Supabase Table Editor.
-Bezoekers hebben alleen SELECT-rechten, afgedwongen met RLS; geen schrijfrechten.
-Het schema en de startinhoud staan in `supabase/migrations/20261014_genesis_scent_layers.sql`.
-Dit is echte contentlevering, geen periodieke keepalive. Bij weinig bezoekers kan
-het gratis Supabase-project alsnog automatisch pauzeren.
+De geurnoten staan sinds de nieuwe opbouw (LIGHT top, EARTH hart, LIFE basis) als
+vaste tekst in de HTML. De oude tabel `public.scent_layers` bevat nog de vorige
+noten en wordt niet meer gelezen.
 
-## Product presentation
-The supplied packshot is `public/images/genesis-packshot.png`. The isolated bottle
-is `public/images/genesis-bottle.png`, made with the built-in imagegen tool.
-Prompt: Extract only the perfume bottle, remove box and background, use genuine
-transparency, preserve cap, glass, proportions, label text and colors.
-The scent section cycles top/heart/base every 6.5 seconds while visible, with a
-pause control, manual tabs, keyboard support and reduced-motion support.
-Updated scent content: `supabase/migrations/20261014_genesis_updated_notes.sql`.
+Nieuwsbrief: `supabase/migrations/20261117_newsletter_subscribers.sql` maakt de
+tabel `newsletter_subscribers` (alleen INSERT voor bezoekers, niemand kan de lijst
+via de API lezen). Zolang deze migratie niet is toegepast, toont het formulier een
+foutmelding en nooit een onterechte succesmelding.
+
+## 3D-hero
+`src/hero3d.js` (three.js, realtime WebGL) bouwt flacon, dop, verstuiver, etiket
+en nevel. Het wordt pas na de eerste weergave geladen; tot dan, en bij
+`prefers-reduced-motion` of zonder WebGL, toont de hero de productfoto
+`public/images/genesis-n1-bordeaux.webp`. Copy en pre-orderknop staan altijd in de HTML.
 
 ## Community
 `/community/` has a testimonial/review form and a paginated approved-story feed.

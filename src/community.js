@@ -1,5 +1,5 @@
-import './style.css';
-import './community.css';
+import './site.js';
+import './pages.css';
 import { supabase } from './supabase.js';
 
 const form = document.querySelector('#story-form');
@@ -27,15 +27,15 @@ function element(tag, text, className) {
 }
 function showPrompts() {
   prompts.forEach(([title, description], index) => {
-    const card = element('article', undefined, 'story-card-community prompt-card');
-    card.append(element('span', 'SCHRIJFINSPIRATIE', 'story-category'), element('h3', title), element('p', description));
-    const link = element('a', 'DEEL JOUW VERHAAL ↗'); link.href = '#share'; card.append(link);
+    const card = element('article', undefined, 'story-card prompt-card');
+    card.append(element('span', 'Schrijfinspiratie', 'story-category'), element('h3', title), element('p', description));
+    const link = element('a', 'Deel jouw verhaal ↓', 'text-link'); link.href = '#share'; card.append(link);
     (index % 2 ? right : left).append(card);
   });
 }
 function renderStory(story, index) {
-  const card = element('article', undefined, 'story-card-community');
-  card.append(element('span', story.kind === 'review' ? 'REVIEW / THE GENESIS' : 'GETUIGENIS / OUR STORIES', 'story-category'));
+  const card = element('article', undefined, 'story-card');
+  card.append(element('span', story.kind === 'review' ? 'Ervaring · The Genesis' : 'Getuigenis', 'story-category'));
   if (story.kind === 'review' && story.rating) {
     const stars = element('p', '★'.repeat(story.rating) + '☆'.repeat(5 - story.rating), 'story-stars');
     stars.setAttribute('aria-label', `${story.rating} van 5 sterren`); card.append(stars);
@@ -64,21 +64,21 @@ async function loadStories(reset = true) {
     more.hidden = offset >= count;
     if (!count) {
       showPrompts();
-      feedStatus.textContent = 'Hier verschijnen straks de goedgekeurde verhalen. Deel jij de eerste? De kaarten hierboven zijn schrijfinspiratie.';
-    } else feedStatus.textContent = 'Verhalen van bezoekers. Reviews zijn niet geverifieerd als aankoop.';
+      feedStatus.textContent = 'Nog geen gepubliceerde verhalen. De kaarten hierboven zijn schrijfinspiratie — deel jij het eerste verhaal?';
+    } else feedStatus.textContent = 'Verhalen van bezoekers, gepubliceerd met hun toestemming. Ervaringen zijn niet geverifieerd als aankoop.';
   } catch {
     if (version !== requestVersion) return;
     if (reset) showPrompts();
     document.querySelector('#community-count').textContent = 'Verhalen tijdelijk niet beschikbaar';
     feedStatus.textContent = 'We kunnen de verhalen nu niet laden. Probeer het opnieuw.';
-    more.hidden = false; more.textContent = 'OPNIEUW PROBEREN ↻';
+    more.hidden = false; more.textContent = 'Opnieuw proberen';
   } finally { if (version === requestVersion) more.disabled = false; }
 }
-more.addEventListener('click', () => { more.textContent = 'MEER VERHALEN ↓'; loadStories(offset === 0); });
+more.addEventListener('click', () => { more.textContent = 'Meer verhalen'; loadStories(offset === 0); });
 document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
   filter = button.dataset.filter;
   document.querySelectorAll('[data-filter]').forEach(node => node.setAttribute('aria-pressed', String(node === button)));
-  more.hidden = true; more.textContent = 'MEER VERHALEN ↓'; loadStories();
+  more.hidden = true; more.textContent = 'Meer verhalen'; loadStories();
 }));
 function syncKind() {
   const review = form.elements.kind.value === 'review';
