@@ -67,8 +67,9 @@ via de API lezen). Zolang deze migratie niet is toegepast, toont het formulier e
 foutmelding en nooit een onterechte succesmelding.
 
 ## 3D-hero
-`src/hero3d.js` (three.js, realtime WebGL) bouwt flacon, dop, verstuiver, etiket
-en nevel. Het wordt pas na de eerste weergave geladen; tot dan, en bij
+`src/hero3d.js` (three.js, WebGL) gebruikt de aangeleverde productfoto als flacon.
+De dop wordt uit die foto gesneden en apart geanimeerd. Alleen de verstuiver onder de
+dop is gemodelleerd. Daarbij komen de nevel en de woorden LIGHT · EARTH · LIFE. Het wordt pas na de eerste weergave geladen; tot dan, en bij
 `prefers-reduced-motion` of zonder WebGL, toont de hero de productfoto
 `public/images/genesis-n1-bordeaux.webp`. Copy en pre-orderknop staan altijd in de HTML.
 

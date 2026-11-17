@@ -27,16 +27,16 @@ Beschrijving van de scrollvoortgang (desktop ≈ 3,4 schermhoogtes, mobiel ≈ 2
 
 | Voortgang | Moment | Wat er gebeurt |
 | --- | --- | --- |
-| Laden | 01 Het eerste licht | De productfoto staat er meteen. Binnen ±1,8 s nemen de 3D-flacon, de lichtbundel en het warme tegenlicht het over. Titel, prijs en knoppen verschijnen kort na elkaar. |
-| 0–0,38 | 02 Ontdekking | De flacon draait beheerst ±40°. Reflecties bewegen over glas en metaal. Het etiket blijft leesbaar. |
-| 0,40–0,58 | Dop | De dop komt los, gaat omhoog en beweegt rustig opzij. De verstuiver en nozzle worden zichtbaar en de camera komt op ooghoogte. |
+| Laden | 01 Het eerste licht | Je eigen productfoto is de flacon. Een lichtbundel en warm tegenlicht onthullen hem in ±1,8 s. Titel, prijs en knoppen verschijnen kort na elkaar. |
+| 0–0,38 | 02 Ontdekking | De camera komt iets dichterbij en er glijdt een lichtstreep over glas, etiket en dop. De flacon zelf draait niet: een foto heeft maar één aanzicht. Voor echte rotatie is een 360°-fotoreeks of een 3D-model van de flacon nodig. |
+| 0,40–0,58 | Dop | De dop wordt uit de foto gesneden, komt los, gaat omhoog en beweegt rustig opzij. Daaronder verschijnt de verstuiver op de gefotografeerde kraag. Dit is het enige gemodelleerde onderdeel, omdat het op de foto onder de dop zit. |
 | ≥ 0,60 | 03 De verstuiving | Het pompje gaat 90 ms omlaag en daarna 75 ms vertraging. Dan volgt één uitstoot van 170 ms: ±6.500 druppels in verschillende groottes met een smalle oorsprong. Ze starten snel, worden afgeremd door luchtweerstand, wervelen licht en verdunnen. Tegenlicht laat ze oplichten. Afspelen gebeurt één keer en op tijd, niet gekoppeld aan scroll, dus nooit achteruit de nozzle in. De knop “Bekijk de verstuiving” speelt de spray opnieuw af. |
 | 0,68–0,93 | 04 Het verhaal | Fijne gouden deeltjes trekken uit de nevelwolk en vormen LIGHT · EARTH · LIFE. Dit is scrollgekoppeld en dus omkeerbaar, maar de deeltjes gaan nooit terug naar de nozzle. |
 | Vanaf 0,5 | Productbalk | Naam, inhoud, pre-orderknop en herhaalknop blijven zichtbaar. |
 
 Referentievideo: de verstuiving waaiert zijwaarts uit en lost op tot de merknaam. Wat ik heb verbeterd: een fijnere, minder glinsterende nevel, een zichtbare druk op het pompje met vertraging, verdunning in plaats van een constante wolk, en een overgang naar de drie geurhoofdstukken.
 
-Fallbacks: bij verminderde beweging, zonder WebGL of bij een fout blijft de statische productfoto staan, zonder vastgezette scrollsectie. De scène pauzeert buiten beeld en in een verborgen tab. Mobiel gebruikt een lagere resolutie en minder deeltjes. Wat realtime is: flacon, dop, licht, nevel en woorden. Er wordt geen video gebruikt.
+Fallbacks: bij verminderde beweging, zonder WebGL of bij een fout blijft de statische productfoto staan, zonder vastgezette scrollsectie. De scène pauzeert buiten beeld en in een verborgen tab. Mobiel gebruikt een lagere resolutie en minder deeltjes. Flacon en dop zijn de aangeleverde foto. Verstuiver, licht, nevel en woorden worden realtime in WebGL gerenderd. Er wordt geen video gebruikt.
 
 ## 5. Geurnoten (bron: aangeleverde tabel)
 - **Top — LIGHT:** Bergamot · Een vleugje roze peper
@@ -59,5 +59,5 @@ De PDF “Alle geurnoten” noemt “Iriswortel”, de tabel “Een vleugje iris
 
 **Technisch**
 - Supabase-migratie `20261117_newsletter_subscribers.sql` toepassen, inclusief een privacyverklaring en een afmeldproces
-- Optioneel: een 3D-model (glTF) of hogeresolutie-etiketbestand van de echte flacon voor nog meer gelijkenis. Het huidige model en etiket zijn nagebouwd op basis van de productfoto.
+- Een productfoto in hogere resolutie (de huidige is 546 × 1208 px) voor een scherpere hero op grote schermen. Een foto zonder dop, waarop de echte verstuiver te zien is, kan het gemodelleerde exemplaar vervangen. Optioneel: een 360°-reeks of 3D-model voor echte rotatie.
 - Openbare lancering: de toegangspoort in `worker/index.js` uitzetten wanneer de site live moet

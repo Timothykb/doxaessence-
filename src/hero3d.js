@@ -1,9 +1,9 @@
-/* The Genesis — realtime 3D hero.
-   Bottle, cap and atomiser are modelled from the supplied product photo.
+/* The Genesis — realtime WebGL hero.
+   The bottle and cap are the supplied product photo; only the atomiser under
+   the cap (not visible in the photo) is modelled.
    Scroll drives pose, camera and light; the spray is a short, time-based
    simulation (it never plays backwards into the nozzle). */
 import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const SERIF = '"Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif';
@@ -13,42 +13,49 @@ const ease = x => x * x * (3 - 2 * x);
 const easeInOut = x => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const lin = hex => new THREE.Color(hex); // THREE.Color converts sRGB hex to linear working space
 
-/* ── Label artwork (re-typeset from the supplied bottle label) ── */
-function drawLabel() {
-  const W = 1000, H = 1100;
-  const canvas = document.createElement('canvas');
-  canvas.width = W; canvas.height = H;
-  const c = canvas.getContext('2d');
-  const paper = c.createRadialGradient(W * .5, H * .42, 80, W * .5, H * .5, W * .8);
-  paper.addColorStop(0, '#fbf2e3'); paper.addColorStop(1, '#efdfc6');
-  c.fillStyle = paper; c.fillRect(0, 0, W, H);
-  // fine paper grain
-  const grain = c.getImageData(0, 0, W, H);
-  for (let i = 0; i < grain.data.length; i += 4) { const n = (Math.random() - .5) * 9; grain.data[i] += n; grain.data[i + 1] += n; grain.data[i + 2] += n; }
-  c.putImageData(grain, 0, 0);
-  const red = '#5f0a06';
-  c.strokeStyle = '#b4532c'; c.lineWidth = 3; c.strokeRect(14, 14, W - 28, H - 28);
-  c.strokeStyle = red; c.lineWidth = 1.6; c.strokeRect(26, 26, W - 52, H - 52);
-  c.fillStyle = red; c.textBaseline = 'alphabetic';
-  const text = (str, x, y, font, align = 'center', spacing = 0) => {
-    c.font = font; c.textAlign = align;
-    if ('letterSpacing' in c) c.letterSpacing = `${spacing}px`;
-    c.fillText(str, x, y);
-    if ('letterSpacing' in c) c.letterSpacing = '0px';
-  };
-  text('DOXA ESSENCE', 90, 150, `500 50px ${SERIF}`, 'left', 3);
-  text('N°1', W - 90, 150, `500 50px ${SERIF}`, 'right', 1);
-  c.fillRect(90, 196, W - 180, 2);
-  text('THE GENESIS', W / 2, 400, `600 132px ${SERIF}`, 'center', 1);
-  text('In the beginning God created', W / 2, 512, `italic 500 64px ${SERIF}`);
-  text('the heaven and the earth.', W / 2, 590, `italic 500 64px ${SERIF}`);
-  c.fillRect(90, 690, W - 180, 2);
-  text('LIGHT', 255, 830, `500 64px ${SERIF}`, 'center', 3);
-  text('EARTH', 500, 830, `500 64px ${SERIF}`, 'center', 3);
-  text('LIFE', 735, 830, `500 64px ${SERIF}`, 'center', 3);
-  c.fillRect(377, 770, 2, 80); c.fillRect(618, 770, 2, 80);
-  text('EAU DE PARFUM · 50 ML ℮ / 1.7 FL.OZ.LIQ.', W / 2, 990, `500 38px ${SERIF}`, 'center', 1);
-  return canvas;
+/* ── The supplied product photo ── */
+const P = { src: '/images/genesis-n1-bordeaux.webp', w: 546, h: 1208, capTop: 94, capBottom: 372, capL: 184, capR: 432, centerX: 308, baseY: 1178 };
+
+async function loadPhoto() {
+  const img = new Image();
+  img.src = P.src;
+  await img.decode();
+  return img;
+}
+
+// Separate the bottle from its plain bordeaux background, and the cap from the bottle.
+function keyPhoto(img) {
+  const full = document.createElement('canvas');
+  full.width = P.w; full.height = P.h;
+  const c = full.getContext('2d', { willReadFrequently: true });
+  c.drawImage(img, 0, 0, P.w, P.h);
+  const data = c.getImageData(0, 0, P.w, P.h);
+  const d = data.data;
+  const alpha = new Float32Array(P.w * P.h);
+  for (let y = 0; y < P.h; y++) {
+    const l = y * P.w * 4, r = (y * P.w + P.w - 6) * 4;      // background at both edges of this row
+    const br = (d[l + 20] + d[r]) / 2, bgc = (d[l + 21] + d[r + 1]) / 2, bb = (d[l + 22] + d[r + 2]) / 2;
+    for (let x = 0; x < P.w; x++) {
+      const i = (y * P.w + x) * 4;
+      const dist = Math.hypot(d[i] - br, d[i + 1] - bgc, d[i + 2] - bb);
+      alpha[y * P.w + x] = Math.min(1, Math.max(0, (dist - 18) / 28));
+    }
+  }
+  const body = c.createImageData(P.w, P.h);
+  for (let i = 0; i < alpha.length; i++) {
+    const y = Math.floor(i / P.w);
+    body.data.set(d.subarray(i * 4, i * 4 + 3), i * 4);
+    body.data[i * 4 + 3] = y < P.capBottom ? 0 : Math.round(alpha[i] * 255);
+  }
+  const capW = P.capR - P.capL, capH = P.capBottom - P.capTop;
+  const capImg = c.createImageData(capW, capH);
+  for (let y = 0; y < capH; y++) for (let x = 0; x < capW; x++) {
+    const src = (y + P.capTop) * P.w + x + P.capL, dst = y * capW + x;
+    capImg.data.set(d.subarray(src * 4, src * 4 + 3), dst * 4);
+    capImg.data[dst * 4 + 3] = Math.round(alpha[src] * 255);
+  }
+  const make = (image) => { const cv = document.createElement('canvas'); cv.width = image.width; cv.height = image.height; cv.getContext('2d').putImageData(image, 0, 0); return cv; };
+  return { body: make(body), cap: make(capImg) };
 }
 
 /* ── Target points for "LIGHT · EARTH · LIFE" ── */
@@ -92,7 +99,6 @@ export async function createHero({ canvas, mobile = false }) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.05;
-  if ('transmissionResolutionScale' in renderer) renderer.transmissionResolutionScale = mobile ? .5 : .8;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, .1, 60);
@@ -137,89 +143,65 @@ export async function createHero({ canvas, mobile = false }) {
   const fill = new THREE.DirectionalLight(lin('#ffe6d0'), .5); fill.position.set(2, -1, 4);
   scene.add(key, rim, fill);
 
-  /* ── Bottle ─────────────────────────────────────────── */
-  const stage = new THREE.Group();   // position/scale for layout
-  const bottle = new THREE.Group();  // rotates with scroll
-  stage.add(bottle); scene.add(stage);
-  const BODY_H = 1.86, BODY_W = 1, BODY_D = .6;
-  bottle.position.y = -1.28;
-
-  const glassShell = new THREE.MeshPhysicalMaterial({
-    color: 0x000000, metalness: 0, roughness: .03, clearcoat: 1, clearcoatRoughness: .02, specularIntensity: 1,
-    transparent: true, depthWrite: false, side: THREE.DoubleSide, envMapIntensity: 2.4,
-  });
-  glassShell.onBeforeCompile = shader => {
-    shader.fragmentShader = shader.fragmentShader.replace('#include <opaque_fragment>', `
-      float fres = pow(1.0 - abs(dot(normalize(normal), normalize(vViewPosition))), 2.6);
-      float lum = dot(outgoingLight, vec3(.3, .59, .11));
-      outgoingLight += vec3(1., .93, .86) * fres * .22;
-      diffuseColor.a = clamp(.025 + fres * .5 + lum * 1.1, 0., .92);
-      #include <opaque_fragment>`);
+  /* ── Bottle: the supplied product photo ─────────────
+     The glass, liquid, label and cap are the real photograph. Only the
+     atomiser hidden under the cap (not visible in the photo) is modelled. */
+  const photo = await loadPhoto();
+  const { body: bodyCanvas, cap: capCanvas } = keyPhoto(photo);
+  const U = 2.58 / (P.baseY - P.capTop);                       // world units per photo pixel
+  const BASE_WORLD = -1.28;
+  const px2w = (x, y, z = 0) => new THREE.Vector3((x - P.centerX) * U, BASE_WORLD + (P.baseY - y) * U, z);
+  const photoTexture = canvas2d => {
+    const t = new THREE.CanvasTexture(canvas2d);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return t;
   };
-  const shell = new THREE.Mesh(new RoundedBoxGeometry(BODY_W, BODY_H, BODY_D, 6, .085), glassShell);
-  shell.position.y = BODY_H / 2; shell.renderOrder = 3;
-  bottle.add(shell);
 
-  // Thick glass base — clear, refracting the light behind it
-  const baseGlass = new THREE.Mesh(new RoundedBoxGeometry(.95, .33, .55, 4, .06), new THREE.MeshPhysicalMaterial({
-    color: lin('#fff4f0'), transmission: 1, thickness: .55, roughness: .02, ior: 1.5, attenuationColor: lin('#f7ddd5'), attenuationDistance: 4,
-    specularIntensity: 1, envMapIntensity: 1.6,
-  }));
-  baseGlass.position.y = .19;
-  bottle.add(baseGlass);
+  const stage = new THREE.Group();   // position/scale for layout
+  const bottle = new THREE.Group();  // the photographed bottle + atomiser
+  stage.add(bottle); scene.add(stage);
 
-  // Amber liquid with a visible surface just below the shoulder
-  const liquid = new THREE.Mesh(new RoundedBoxGeometry(.88, 1.42, .48, 4, .06), new THREE.MeshPhysicalMaterial({
-    color: lin('#ffe2b0'), transmission: 1, thickness: .7, roughness: .04, ior: 1.36,
-    attenuationColor: lin('#d08a2c'), attenuationDistance: 1.1, specularIntensity: .8, envMapIntensity: 1.2,
-    emissive: lin('#a8560e'), emissiveIntensity: .55,
-  }));
-  liquid.position.y = .36 + .71;
-  bottle.add(liquid);
-
-  // Dip tube, seen through the liquid
-  const tube = new THREE.Mesh(new THREE.CylinderGeometry(.012, .012, 1.5, 12), new THREE.MeshStandardMaterial({ color: lin('#f1e5d4'), roughness: .3, transparent: true, opacity: .55 }));
-  tube.position.set(.02, 1.1, -.04);
-  bottle.add(tube);
-
-  // Label
-  const labelTex = new THREE.CanvasTexture(drawLabel());
-  labelTex.colorSpace = THREE.SRGBColorSpace;
-  labelTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  const label = new THREE.Mesh(new THREE.PlaneGeometry(.8, .88), new THREE.MeshStandardMaterial({ map: labelTex, roughness: .62, metalness: 0, envMapIntensity: .55, transparent: true }));
-  label.position.set(0, 1.0, BODY_D / 2 + .003);
-  bottle.add(label);
-
-  // Silver collar (stays on the bottle), atomiser and nozzle
-  const metal = new THREE.MeshPhysicalMaterial({ color: lin('#e4e5e8'), metalness: 1, roughness: .13, envMapIntensity: 1.5, clearcoat: .4 });
-  const collar = latheMetal([[0, 0], [.255, 0], [.27, .012], [.27, .05], [.255, .066], [.16, .07], [.15, .09], [0, .09]], metal);
-  collar.position.y = BODY_H;
-  bottle.add(collar);
-  const actuator = new THREE.Group();
-  actuator.position.y = BODY_H + .07;
-  const actuatorBody = latheMetal([[0, 0], [.11, 0], [.125, .02], [.125, .13], [.112, .158], [.06, .168], [0, .168]], metal, 56);
-  actuator.add(actuatorBody);
-  const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(.026, .026, .02, 24), new THREE.MeshStandardMaterial({ color: 0x111111, roughness: .4 }));
-  nozzle.rotation.x = Math.PI / 2; nozzle.position.set(0, .1, .121);
-  actuator.add(nozzle);
-  const nozzleTip = new THREE.Object3D(); nozzleTip.position.set(0, .1, .14); actuator.add(nozzleTip);
-  bottle.add(actuator);
-
-  // Cap
-  const cap = new THREE.Group();
-  const capBody = latheMetal([[0, .015], [.235, 0], [.272, .012], [.278, .04], [.278, .6], [.27, .633], [.25, .645], [0, .648]], metal, 96);
-  cap.add(capBody);
-  stage.add(cap);
-  const CAP_Y = BODY_H + .07;
-
-  // Soft contact shadow
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.6), new THREE.ShaderMaterial({
-    transparent: true, depthWrite: false, uniforms: { uStrength: { value: .5 } },
+  const bodyUniforms = { uMap: { value: photoTexture(bodyCanvas) }, uLight: { value: 0 }, uSweep: { value: -.3 }, uSweepAmt: { value: 0 } };
+  const photoShader = {
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
-    fragmentShader: 'uniform float uStrength; varying vec2 vUv; void main(){ vec2 p = (vUv - .5) * vec2(2.6, 1.6); float d = length(p * vec2(1.55, 2.4)); float a = exp(-d * d * 2.2) * .9 + exp(-d * d * 14.) * .4; gl_FragColor = vec4(0.,0.,0., a * uStrength); }',
-  }));
-  shadow.rotation.x = -Math.PI / 2; shadow.position.y = -1.279;
-  stage.add(shadow);
+    fragmentShader: `
+      uniform sampler2D uMap; uniform float uLight, uSweep, uSweepAmt; varying vec2 vUv;
+      void main(){
+        vec4 t = texture2D(uMap, vUv);
+        vec3 c = t.rgb * mix(.32, 1., uLight);
+        float band = exp(-pow((vUv.x + (vUv.y - .5) * .35 - uSweep) * 7., 2.));   // light gliding over glass and metal
+        float lum = dot(t.rgb, vec3(.3, .59, .11));
+        c += vec3(1., .9, .76) * band * uSweepAmt * (.12 + lum * .45);
+        gl_FragColor = vec4(c, t.a);
+        #include <colorspace_fragment>
+      }`,
+  };
+  const body = new THREE.Mesh(new THREE.PlaneGeometry(P.w * U, P.h * U), new THREE.ShaderMaterial({ ...photoShader, uniforms: bodyUniforms, transparent: true, depthWrite: false }));
+  body.position.copy(px2w(P.w / 2, P.h / 2));
+  body.renderOrder = 1;
+  bottle.add(body);
+
+  const capUniforms = { uMap: { value: photoTexture(capCanvas) }, uLight: bodyUniforms.uLight, uSweep: bodyUniforms.uSweep, uSweepAmt: bodyUniforms.uSweepAmt };
+  const cap = new THREE.Mesh(new THREE.PlaneGeometry((P.capR - P.capL) * U, (P.capBottom - P.capTop) * U), new THREE.ShaderMaterial({ ...photoShader, uniforms: capUniforms, transparent: true, depthWrite: false }));
+  const CAP_HOME = px2w((P.capL + P.capR) / 2, (P.capTop + P.capBottom) / 2, .02);
+  cap.position.copy(CAP_HOME);
+  cap.renderOrder = 2;
+  stage.add(cap);
+
+  // Atomiser (hidden under the cap in the photo), sitting on the photographed collar
+  const metal = new THREE.MeshPhysicalMaterial({ color: lin('#e4e5e8'), metalness: 1, roughness: .13, envMapIntensity: 1.5, clearcoat: .4 });
+  const actuator = new THREE.Group();
+  const ACT_Y = px2w(P.centerX, P.capBottom).y - .004;
+  actuator.position.set(0, ACT_Y, 0);
+  actuator.rotation.y = -1.22;                                  // nozzle faces left, slightly toward the viewer
+  actuator.add(latheMetal([[0, 0], [.035, 0], [.035, .03], [.11, .03], [.122, .05], [.122, .16], [.11, .185], [.06, .195], [0, .195]], metal, 56));
+  const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(.024, .024, .02, 24), new THREE.MeshStandardMaterial({ color: 0x111111, roughness: .4 }));
+  nozzle.rotation.x = Math.PI / 2; nozzle.position.set(0, .12, .118);
+  actuator.add(nozzle);
+  const nozzleTip = new THREE.Object3D(); nozzleTip.position.set(0, .12, .135); actuator.add(nozzleTip);
+  actuator.visible = false;
+  bottle.add(actuator);
 
   /* ── Mist: one short burst of fine droplets ─────────── */
   const MIST = mobile ? 2600 : 6500;
@@ -391,24 +373,26 @@ export async function createHero({ canvas, mobile = false }) {
   let intro = 0, current = 0, target = 0, dirty = true;
   const spray = { t: 0, active: false, played: false };
   function applyPose(p, silent = false) {
-    const turn = -.32 + .7 * easeInOut(seg(p, .04, .38)) - 1.5 * easeInOut(seg(p, .42, .57)) + .72 * easeInOut(seg(p, .8, 1));
-    bottle.rotation.y = turn;
-    bottle.rotation.x = .035 - .03 * ease(seg(p, .04, .38));
-    bottle.position.y = -1.28 + .035 * ease(seg(p, 0, .4)) - .035 * ease(seg(p, .78, 1));
+    const float = .03 * ease(seg(p, 0, .4)) - .03 * ease(seg(p, .78, 1));
+    bottle.position.y = float;
     const lift = ease(seg(p, .4, .48)), side = easeInOut(seg(p, .47, .58));
-    cap.position.set(side * (layout.portrait ? .82 : 1.02), bottle.position.y + CAP_Y + lift * .55 - side * 1.05, -side * .35);
-    cap.rotation.set(bottle.rotation.x * (1 - side), turn, -.12 * side);
+    cap.position.set(CAP_HOME.x + side * (layout.portrait ? .8 : .98), CAP_HOME.y + float + lift * .5 - side * 1.0, CAP_HOME.z + side * .06);
+    cap.rotation.z = -.14 * side;
+    actuator.visible = lift > .02;
     if (silent) return;
-    const dolly = 1 - .07 * ease(seg(p, .44, .6)) + .09 * ease(seg(p, .74, 1));
+    const dolly = 1 - .06 * ease(seg(p, .05, .36)) + .06 * ease(seg(p, .44, .6)) + .06 * ease(seg(p, .74, 1));
     const rise = ease(seg(p, .44, .6)) * (1 - ease(seg(p, .76, .98)));   // meet the atomiser at eye level
-    camera.position.set(0, .32 + rise * (layout.portrait ? .35 : .55), layout.dist * dolly);
-    camera.lookAt(0, (layout.portrait ? .05 : 0) + rise * .28, 0);
+    camera.position.set(0, .12 + rise * (layout.portrait ? .25 : .32), layout.dist * dolly);
+    camera.lookAt(0, (layout.portrait ? .05 : 0) + rise * .32, 0);
     scene.environmentRotation.y = -.6 + p * 1.9;
     key.position.set(-3 + p * 2.5, 4, 5);
     const light = ease(intro);
     key.intensity = 2.2 * light; rim.intensity = 2.4 * (.3 + .7 * light); fill.intensity = .5 * light;
     scene.environmentIntensity = .25 + .5 * light;
-    backdropUniforms.uGlow.value = light * (1 + .25 * ease(seg(p, .5, .65))) * (.55 + .45 * layout.lightMul);
+    bodyUniforms.uLight.value = light;
+    bodyUniforms.uSweep.value = -.25 + 1.5 * seg(p, .02, .42);
+    bodyUniforms.uSweepAmt.value = light * (.55 + .45 * (1 - seg(p, .42, .5)));
+    backdropUniforms.uGlow.value = light * (.7 + .2 * ease(seg(p, .5, .65))) * (.55 + .45 * layout.lightMul);
     backdropUniforms.uBeam.value = light * (1 - .6 * seg(p, .55, .8)) * layout.lightMul;
     backdropUniforms.uBeamShift.value = p * 1.2;
     dustUniforms.uGather.value = ease(seg(p, .68, .93));
@@ -422,7 +406,7 @@ export async function createHero({ canvas, mobile = false }) {
       mistUniforms.uTime.value = t - .075;            // droplets appear just after the press
       mistUniforms.uOpacity.value = 1 - seg(p, .82, .95) * .7;
     }
-    actuator.position.y = BODY_H + .07 - press * .034;
+    actuator.position.y = ACT_Y - press * .03;
     mist.visible = spray.active && mistUniforms.uTime.value > 0;
   }
 
