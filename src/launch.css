@@ -1,0 +1,89 @@
+.signup-hero{padding:35px 24px 25px;min-height:calc(100svh - 124px)}.signup-copy{width:min(100%,680px)}.signup-copy h1{font-size:clamp(44px,4.5vw,65px);margin:14px 0}.signup-copy .signup-intro{margin-bottom:12px}.launch-benefit{font-size:13px;line-height:1.6;max-width:380px;margin:0 auto 22px}#signup-form{padding:22px 26px 12px}.newsletter-option{font-size:12px}.signup-privacy{margin-top:12px}.signup-copy .intro-replay{margin-top:10px}#signup-status:empty{min-height:0;margin:0}.signup-fields{gap:20px}
+.launch-collection{padding:65px 6%}.launch-section-heading h2{font:400 clamp(34px,4vw,52px)/1.1 var(--serif);margin:14px 0 30px}.collection-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}.chapter-preview{padding:28px 0;border-top:1px solid var(--line);background:none}.chapter-preview>span{font-size:9px;letter-spacing:.13em}.chapter-preview h3{font:italic 36px var(--serif);margin:22px 0 10px}.chapter-preview p{font-size:14px;line-height:1.6}.chapter-preview small,.chapter-preview a{display:inline-flex;align-items:center;min-height:44px;font-size:11px;margin-top:12px;color:var(--muted)}.genesis-preview{border-top:2px solid var(--wine)}
+/* Editorial scent notes: delicate rules, no filled panels. */
+.scent{border-radius:0;background:var(--cream);color:var(--wine);margin:0;padding:60px 7%}.scent-heading h2{font-size:clamp(36px,4vw,54px)}.scent-heading{align-items:end}.fragrance-description{border-color:var(--line);margin-top:25px;padding-top:25px;gap:15px 8%}.fragrance-description h3{font-size:32px}.fragrance-description>p:last-child{font-size:15px;color:var(--muted)}.fragrance-description>.eyebrow{display:none}.scent-stage{border:0;border-radius:0;background:none;grid-template-columns:1fr 1fr;margin-top:0;padding:10px 0;gap:7%}.scent-stage .bottle-scene{min-height:440px}.scent-stage .scent-bottle{height:360px;mix-blend-mode:multiply}.scent-orbit{border-color:#59000030!important}.bottle-caption{color:var(--muted)}.pyramid-hint{text-align:left;margin-bottom:16px;color:var(--muted)}.pyramid-composition{padding:20px 0}.scent-tabs.pyramid-tiers{gap:0;align-items:stretch}.scent-tabs.pyramid-tiers button,.scent-tabs.pyramid-tiers button:nth-child(1),.scent-tabs.pyramid-tiers button:nth-child(2){width:100%;min-height:110px;padding:22px 0 22px 20px;display:grid;grid-template-columns:30px 1fr;gap:8px 18px;border:0;border-top:1px solid var(--line);border-radius:0;text-align:left;background:none;color:var(--wine);position:relative;transition:opacity .2s;opacity:.65}.scent-tabs.pyramid-tiers button:last-child{border-bottom:1px solid var(--line)}.scent-tabs.pyramid-tiers button[aria-selected=true]{background:none;box-shadow:none;transform:none;opacity:1}.scent-tabs.pyramid-tiers button:before{content:'';position:absolute;left:0;top:26px;width:3px;height:28px;background:var(--wine);opacity:0;transition:opacity .2s}.scent-tabs.pyramid-tiers button[aria-selected=true]:before{opacity:1}.pyramid-tiers button svg{grid-row:1/3;width:25px;height:25px;align-self:center}.pyramid-tiers button strong{font:italic 28px var(--serif)}.scent-tabs.pyramid-tiers button .tier-notes{grid-column:2;text-align:left;justify-self:start;max-width:none;font-size:13px;line-height:1.7}.scent-controls{border-color:var(--line);font-size:10px}.scent .text-link.cream{color:var(--wine);font-size:10px}.business-bar{flex-basis:100%;display:flex;align-items:center;flex-wrap:wrap;gap:14px 28px;border-top:1px solid #f5f1e833;padding-top:22px;font-size:11px;line-height:1.6}.business-bar a{min-height:32px;display:flex;align-items:center}
+@media(max-width:700px){.signup-hero{padding:28px 20px 24px;min-height:0}.signup-copy h1{font-size:43px}.signup-fields{grid-template-columns:1fr;gap:14px}#signup-form{padding:20px 18px 12px}.launch-collection{padding:45px 7%}.collection-preview{grid-template-columns:1fr 1fr;gap:20px}.chapter-preview h3{font-size:28px}.chapter-preview p{font-size:12px}.scent{padding:40px 7%}.scent-stage{grid-template-columns:1fr;gap:0}.scent-stage .bottle-scene{min-height:310px}.scent-stage .scent-bottle{height:270px}.pyramid-composition{padding:0}.scent-tabs.pyramid-tiers button,.scent-tabs.pyramid-tiers button:nth-child(1),.scent-tabs.pyramid-tiers button:nth-child(2){min-height:100px;padding:18px 0 18px 14px}.fragrance-description{grid-template-columns:1fr}.fragrance-description h3{font-size:29px}.business-bar{gap:10px 20px;font-size:10px}}
+.social-follow{padding:25px 7% 45px;display:flex;align-items:center;flex-wrap:wrap;gap:16px 32px}.social-follow a{font-size:13px;min-height:44px;display:flex;align-items:center}.social-follow a:hover{text-decoration:underline}.signup-fields [aria-invalid=true]{border-color:#a52c2c}.compact-footer{padding-top:25px;padding-bottom:22px}.business-bar{padding-top:16px}
+@media(max-width:700px){.social-follow{display:grid;gap:5px;padding:0 7% 30px}}
+
+.launch-benefit{max-width:100%;text-wrap:balance}
+/* A modest readability lift for the public newsletter page; retain all font families. */
+.newsletter-page .announcement{font-size:10px}
+.newsletter-page .header nav a{font-size:11px}
+.newsletter-page .eyebrow{font-size:11px;line-height:1.6}
+.newsletter-page .signup-copy h1{font-size:clamp(46px,4.8vw,69px);line-height:1.08}
+.newsletter-page .signup-copy .signup-intro{font-size:17px;line-height:1.65}
+.newsletter-page .launch-benefit{font-size:15px;line-height:1.65}
+.newsletter-page .signup-fields label{font-size:14px}
+.newsletter-page .signup-fields input{font-size:17px}
+.newsletter-page .newsletter-option{font-size:14px;line-height:1.6}
+.newsletter-page .signup-submit{font-size:13px;margin-top:28px}
+.newsletter-page .signup-privacy{font-size:12px;line-height:1.7}
+.newsletter-page #signup-status{font-size:15px}
+.newsletter-page .about-short h2{font-size:clamp(45px,5.3vw,74px)}
+.newsletter-page .about-short>div{font-size:18px;line-height:1.8}
+.newsletter-page .compact-footer nav{font-size:13px}
+.newsletter-page .business-bar{font-size:12px}
+@media(max-width:700px){.newsletter-page .signup-copy h1{font-size:46px}.newsletter-page .signup-copy .signup-intro{font-size:16px}.newsletter-page .about-short>div{font-size:17px}.newsletter-page .signup-submit{font-size:12px}.newsletter-page .header nav a{font-size:12px}}
+.newsletter-page #signup-form .newsletter-option{font-size:14px;line-height:1.6}
+.newsletter-page .signup-afterword{margin-top:24px}
+.newsletter-page .signup-afterword .signup-intro{margin:0 auto 8px}
+.newsletter-page .signup-afterword .launch-benefit{margin:0 auto}
+/* An editorial closing image dissolves into the warm paper of the About section. */
+.newsletter-page .about-editorial{grid-column:1/-1;justify-self:center;width:min(100%,600px);margin:30px 0 0;isolation:isolate}
+.newsletter-page .about-editorial img{display:block;width:100%;height:auto;mix-blend-mode:multiply;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(0deg,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
+@media(max-width:700px){.newsletter-page .about-editorial{margin-top:12px;width:100%}}
+/* A compact, quarter-turned editorial image beside the brand story. */
+.newsletter-page .about-short{grid-template-columns:1fr 1.1fr;align-items:center;gap:24px 7%}
+.newsletter-page .about-short>.eyebrow{grid-column:1;grid-row:1}
+.newsletter-page .about-short>h2{grid-column:1;grid-row:2}
+.newsletter-page .about-short>div{grid-column:1;grid-row:3}
+.newsletter-page .about-editorial{grid-column:2;grid-row:1/4;width:100%;max-width:560px;aspect-ratio:1672/941;margin:0;position:relative;align-self:center}
+.newsletter-page .about-editorial img{position:absolute;width:56.28%;max-width:none;height:auto;left:50%;top:50%;transform:translate(-50%,-50%) rotate(90deg);transform-origin:center}
+@media(max-width:700px){.newsletter-page .about-short{grid-template-columns:1fr;gap:20px}.newsletter-page .about-editorial{grid-column:1;grid-row:4;max-width:440px;margin-top:10px}.newsletter-page .about-short>div{max-width:none}}
+.newsletter-page .about-short{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.newsletter-page .about-editorial{max-width:420px}
+@media(max-width:700px){.newsletter-page .about-short{grid-template-columns:1fr}.newsletter-page .about-editorial{width:85%;max-width:320px}}
+/* Keep the newspaper text upright and give the compact portrait a little more room. */
+.newsletter-page .about-editorial{width:min(100%,300px);max-width:300px;aspect-ratio:941/1672}
+.newsletter-page .about-editorial img{position:static;width:100%;max-width:100%;height:auto;transform:none}
+@media(max-width:700px){.newsletter-page .about-editorial{width:85%;max-width:280px}}
+/* A true landscape composition with upright newspaper headlines. */
+.newsletter-page .about-editorial{width:100%;max-width:460px;aspect-ratio:3/2}
+.newsletter-page .about-editorial img{position:static;width:100%;height:auto;transform:none}
+@media(max-width:700px){.newsletter-page .about-editorial{width:100%;max-width:390px}}
+/* A tighter editorial pairing, with the photograph anchored beside the story. */
+.newsletter-page .about-short{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);column-gap:40px;max-width:1160px;margin-inline:auto;padding-inline:40px}
+.newsletter-page .about-editorial{justify-self:start;max-width:none;width:100%}
+@media(max-width:900px) and (min-width:701px){.newsletter-page .about-short{column-gap:28px;padding-inline:6%}}
+@media(max-width:700px){.newsletter-page .about-short{grid-template-columns:1fr;gap:20px;padding-inline:7%}.newsletter-page .about-editorial{justify-self:center;max-width:440px;margin-top:0}}
+/* Equal editorial columns; the wider artwork is recomposed rather than stretched. */
+.newsletter-page .about-short{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px}
+.newsletter-page .about-editorial{width:100%;max-width:none;aspect-ratio:auto}
+.newsletter-page .about-editorial img{width:100%;height:auto;object-fit:contain}
+@media(max-width:700px){.newsletter-page .about-short{grid-template-columns:1fr}.newsletter-page .about-editorial{width:100%;max-width:none}}
+.newsletter-page .signup-invitation{max-width:500px;margin:0 auto 26px;font-size:17px;line-height:1.7;text-wrap:pretty}
+@media(max-width:700px){.newsletter-page .signup-invitation{font-size:16px;margin-bottom:24px}}
+/* Wider prose and a deliberate two-line title, balanced against the artwork. */
+.newsletter-page .about-short{max-width:1400px;padding:70px 4%;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);column-gap:42px;row-gap:22px;align-items:start}
+.newsletter-page .about-short>h2{font-size:clamp(38px,4.4vw,62px);line-height:1.12;margin:0;text-wrap:balance}
+.newsletter-page .about-short>h2>span{white-space:nowrap}
+.newsletter-page .about-short>div{max-width:none;text-wrap:pretty}
+.newsletter-page .about-short>div p{orphans:3;widows:3;text-wrap:pretty}
+.newsletter-page .about-editorial{align-self:center}
+@media(max-width:900px) and (min-width:701px){.newsletter-page .about-short{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);column-gap:26px}.newsletter-page .about-short>h2{font-size:35px}}
+@media(max-width:700px){.newsletter-page .about-short{grid-template-columns:1fr;padding:48px 6%;gap:22px}.newsletter-page .about-short>h2{font-size:clamp(30px,7.7vw,44px)}.newsletter-page .about-editorial{margin-top:4px}}
+@media(min-width:701px){.newsletter-page .about-editorial{position:relative;top:32px}}
+@media(min-width:701px){.newsletter-page .about-editorial{grid-row:3;align-self:start;top:0}}
+/* Give the newsletter signup more presence on desktop. */
+@media(min-width:1024px){
+ .newsletter-page .signup-copy{width:min(100%,860px)}
+ .newsletter-page .signup-copy h1{font-size:clamp(69px,5.2vw,82px);margin:18px 0 22px}
+ .newsletter-page .signup-invitation{max-width:620px;font-size:19px;margin-bottom:32px}
+ .newsletter-page #signup-form{padding:32px 36px 22px;border-radius:26px}
+ .newsletter-page .signup-fields{column-gap:32px}
+ .newsletter-page .signup-fields label{font-size:16px;margin-bottom:12px}
+ .newsletter-page .signup-fields input{font-size:19px;padding:12px 0 16px}
+ .newsletter-page .signup-submit{min-height:62px;font-size:15px;margin-top:32px;padding:18px 28px;border-radius:34px}
+ .newsletter-page .signup-privacy{font-size:13px;margin-top:18px}
+}

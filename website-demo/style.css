@@ -1,0 +1,7 @@
+/* Existing homepage follows the scroll experience in the same document. */
+.integrated-demo{background:#f5f1e8}
+.integrated-demo>.announcement,.integrated-demo>.header,.integrated-demo>main,.integrated-demo>footer{position:relative;z-index:2}
+.integrated-demo>.header{position:sticky}
+.integrated-demo>main{background:#f5f1e8}
+#genesis-experience{position:relative;z-index:1}
+.integrated-demo{--wine:#590000;--cream:#f5f1e8;--paper:#fffcf6}

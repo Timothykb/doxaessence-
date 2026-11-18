@@ -80,3 +80,29 @@ Only publish appropriate submissions; check personal information and consent.
 The form explains publication and gives info@doxaessence.com for removal requests.
 The existing private website access gate still applies to this page. Public read
 access to approved stories is intentional; pending submissions remain private.
+
+### Sample and newsletter list
+The homepage collects explicit sample/newsletter preferences through the
+`join_doxa_waitlist` Supabase RPC. The private `doxa_waitlist` table has RLS and
+no anonymous/authenticated table access. Repeated submissions merge interests
+without exposing whether an address already exists. Migration:
+`supabase/migrations/20261025_signup_and_scent.sql`.
+This collects signups; it does not automatically send emails or dispatch samples.
+Unsubscribe requests currently go to info@doxaessence.com and must be handled
+by the owner before sending a campaign. No paid mailing service is enabled.
+
+### Launch page — 26 October 2026
+The current form uses `join_doxa_launch_list` with first_name, email_address and
+email_consent only. Apply `supabase/migrations/20261026_launch_list.sql` before
+publishing. The address-based form is no longer used; existing records are not
+changed or deleted. After confirmed storage the client opens `/thank-you/`.
+The 3D intro is opened on demand so it does not block signup.
+
+Pending owner configuration: authenticated Supabase session to apply migration,
+transactional email provider, verified sender, launch date, social URLs, complete
+legal business identity/address and confirmation of the Bible giveaway.
+No confirmation email is currently sent. Do not claim an email has been sent on
+the thank-you page. Every future campaign email must include an unsubscribe link;
+connect provider-managed unsubscribe/suppression before sending newsletters.
+The privacy notice is a draft describing the current implementation; review the
+provider terms/transfer safeguards and retention process before public launch.

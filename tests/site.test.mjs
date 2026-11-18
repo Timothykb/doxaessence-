@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import worker from '../worker/index.js';
+let live=null, admin=false, fail=false;
+const oldFetch=globalThis.fetch;
+globalThis.fetch=async(url)=>{if(fail)throw Error('offline');return Response.json(String(url).endsWith('is_doxa_admin')?admin:live);};
+const env={ASSETS:{fetch:async request=>new Response(new URL(request.url).pathname)}};
+const request=(path,options)=>new Request('https://doxaessence.com'+path,options);
+try{
+ assert.equal(await (await worker.fetch(request('/'),env)).text(),'/');
+ assert.equal((await worker.fetch(request('/storefront/index.html'),env)).status,404);
+ assert.equal((await worker.fetch(request('/%73torefront/index.html'),env)).status,404);
+ assert.equal((await worker.fetch(request('//storefront/index.html'),env)).status,404);
+ assert.equal((await worker.fetch(request('/preview/'),env)).status,303);
+ assert.equal((await worker.fetch(request('/api/site'),env)).status,404);
+ assert.equal((await worker.fetch(request('/api/preview-session',{method:'POST',headers:{Origin:'https://evil.test',Authorization:'Bearer test'}}),env)).status,403);
+ admin=true;
+ const preview=await worker.fetch(request('/preview/',{headers:{Cookie:'doxa_preview=test'}}),env);
+ assert.equal(await preview.text(),'/storefront/preorder/index.html');assert.equal(preview.headers.get('Cache-Control'),'private, no-store');assert.equal(preview.headers.get('X-Robots-Tag'),'noindex, nofollow');
+ const session=await worker.fetch(request('/api/preview-session',{method:'POST',headers:{Origin:'https://doxaessence.com',Authorization:'Bearer test'}}),env);assert.equal(session.status,204);assert.match(session.headers.get('Set-Cookie'),/HttpOnly; Secure; SameSite=Strict/);
+ assert.equal((await worker.fetch(request('/products/the-genesis/'),env)).status,404);
+ assert.equal(await (await worker.fetch(request('/preview/products/the-genesis/',{headers:{Cookie:'doxa_preview=test'}}),env)).text(),'/storefront/genesis/index.html');
+ assert.equal((await worker.fetch(request('/storefront/genesis/index.html'),env)).status,404);
+ assert.equal((await worker.fetch(request('/checkout/'),env)).status,404);
+ assert.equal(await (await worker.fetch(request('/preview/checkout/',{headers:{Cookie:'doxa_preview=test'}}),env)).text(),'/storefront/checkout/index.html');
+ live={hero_title:'Published'};
+ assert.equal(await (await worker.fetch(request('/'),env)).text(),'/storefront/index.html');assert.deepEqual(await (await worker.fetch(request('/api/site'),env)).json(),live);
+ assert.equal(await (await worker.fetch(request('/products/the-genesis/'),env)).text(),'/storefront/genesis/index.html');
+ assert.equal(await (await worker.fetch(request('/checkout/'),env)).text(),'/storefront/checkout/index.html');
+ live={home_mode:'preorder'};assert.equal(await (await worker.fetch(request('/'),env)).text(),'/storefront/preorder/index.html');
+ assert.equal((await worker.fetch(request('/storefront/preorder/'),env)).status,404);
+ fail=true;assert.equal((await worker.fetch(request('/products/the-genesis/'),env)).status,404);assert.equal(await (await worker.fetch(request('/'),env)).text(),'/');assert.equal((await worker.fetch(request('/preview/',{headers:{Cookie:'doxa_preview=test'}}),env)).status,303);
+ console.log('PASS: launch default, raw route denied, admin preview, cross-origin rejection, secure cookie, published routing, fail closed.');
+}finally{globalThis.fetch=oldFetch;}

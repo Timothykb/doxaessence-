@@ -18,3 +18,6 @@
 .film-quote{font:52px/1.05 var(--serif);letter-spacing:-.04em;padding:40px 7% 0}
 @media(max-width:1050px) and (min-width:701px){.hero{min-height:500px}.hero-copy{padding:45px 9%}.hero h1{font-size:62px}.hero .button{font-size:8px;gap:15px;padding:16px}.hero-tagline{font-size:19px}}
 @media(max-width:700px){.hero{grid-template-columns:1fr;height:auto;max-height:none;min-height:0;padding-bottom:0}.hero-copy{grid-column:1;grid-row:1;padding:44px 7% 38px}.hero h1{font-size:clamp(65px,17vw,100px)}.hero-image{grid-column:1;grid-row:2;height:auto;aspect-ratio:1206/664}.hero-bottom{position:static;padding:23px 7%;font-size:7px}.genesis-image{height:auto;padding:0 0 35px}.film-quote{font-size:40px;padding-top:12px}.film-caption{font-size:7px}}
+
+.announcement.announcement--centered{justify-content:center;text-align:center;min-height:34px;height:auto;padding:10px 5%;font-size:9px;letter-spacing:.16em;line-height:1.5}
+.header>.brand-logo{grid-column:2;grid-row:1;justify-self:center}.header>#navigation{grid-column:1;grid-row:1}.header>.mobile-menu{grid-column:1;grid-row:1;justify-self:start}.header>.header-tools{grid-column:3;grid-row:1}

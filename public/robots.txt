@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /preview/
+Disallow: /storefront/
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /order-status/
+Sitemap: https://doxaessence.com/sitemap.xml

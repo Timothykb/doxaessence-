@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {launchChecks,welcomeState,realOrderSummary} from '../src/launch-readiness.js';
+const complete={settings:{shipping_cents:0,merchant_email:'owner@example.invalid',enabled:true},connections:{mollie:true,database:true,mail:true},product:{price_cents:10000,status:'active',stock:5},live:true};
+assert.ok(launchChecks(complete).every(check=>check.ready));
+for(const input of [{...complete,live:false},{...complete,settings:{...complete.settings,shipping_cents:null}},{...complete,product:{...complete.product,price_cents:0}},{...complete,product:{...complete.product,stock:0}},{...complete,connections:{...complete.connections,mail:false}}])assert.ok(launchChecks(input).some(check=>!check.ready));
+assert.equal(welcomeState({}), 'Wacht op verzending');
+assert.equal(welcomeState({accepted_at:'2026-10-29T01:00:00Z'}),'Aangenomen door de e-maildienst');
+assert.match(welcomeState({first_attempt_at:'2026-10-28T00:00:00Z'},Date.parse('2026-10-29T00:00:00Z')),/Controle nodig/);
+assert.match(welcomeState({first_attempt_at:'2026-10-28T23:00:00Z'},Date.parse('2026-10-29T00:00:00Z')),/automatisch opnieuw/);
+const summary=realOrderSummary([{quantity:2,unit_price_cents:1000,shipping_cents:500},{test_mode:true,quantity:1,unit_price_cents:100},{status:'cancelled',quantity:1,unit_price_cents:500}]);
+assert.deepEqual(summary,{count:2,total:2500});
+console.log('PASS: missing launch requirements remain visible, free shipping valid, welcome acceptance distinct from delivery, retry cutoff visible, sandbox excluded from customer totals.');

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import { csvCell, searchTerm } from '../src/admin-utils.js';
+import worker from '../worker/index.js';
+assert.equal(csvCell('=HYPERLINK("bad")'),'"\'=HYPERLINK(""bad"")"');
+assert.equal(csvCell('  +cmd'),'"\'  +cmd"');
+assert.equal(csvCell('Name, with comma'),'"Name, with comma"');
+assert.equal(csvCell('Line\nBreak'),'"Line\nBreak"');
+assert.equal(csvCell(null),'""');
+assert.equal(searchTerm('name%,id.gt.0)'),'nameid.gt.0');
+const env = {ASSETS:{fetch:async()=>new Response('<html>test</html>',{headers:{'Content-Type':'text/html'}})}};
+const publicResponse = await worker.fetch(new Request('https://doxaessence.com/'),env);
+assert.equal(await publicResponse.text(),'<html>test</html>');
+assert.equal(publicResponse.headers.get('X-Robots-Tag'),null);
+const adminResponse=await worker.fetch(new Request('https://doxaessence.com/admin/'),env);
+assert.equal(adminResponse.headers.get('Cache-Control'),'private, no-store');
+assert.equal(adminResponse.headers.get('X-Robots-Tag'),'noindex, nofollow');
+assert.match(adminResponse.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);
+console.log('PASS: CSV injection protection, safe search, public landing page, private dashboard cache and headers.');

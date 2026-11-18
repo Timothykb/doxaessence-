@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {validatePhoto,photoPath} from '../src/product-photo.js';
+assert.equal(validatePhoto({type:'image/jpeg',size:1024}),'');
+assert.equal(validatePhoto({type:'image/webp',size:5242880}),'');
+assert.match(validatePhoto({type:'image/png',size:5242881}),/maximaal 5 MB/);
+assert.match(validatePhoto({type:'image/svg+xml',size:1024}),/JPG/);
+assert.match(validatePhoto({type:'text/html',size:1024}),/JPG/);
+assert.ok(validatePhoto({type:'image/png',size:0}));
+const file={type:'image/png',size:1024,name:'../../bad.html'};
+assert.match(photoPath('product-id',file),/^product-id\/[a-f0-9-]+\.png$/);
+assert.notEqual(photoPath('product-id',file),photoPath('product-id',file));
+console.log('PASS: photo types, size limit, empty rejection, safe unique paths.');

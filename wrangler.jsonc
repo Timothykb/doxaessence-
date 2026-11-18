@@ -9,5 +9,7 @@
     { "pattern": "www.doxaessence.com", "custom_domain": true }
   ],
   "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": true },
+  "ratelimits": [{ "name": "CHECKOUT_LIMIT", "namespace_id": "2026102901", "simple": { "limit": 20, "period": 60 } }],
+  "triggers": { "crons": ["*/5 * * * *"] },
   "build": { "command": "pnpm build" }
 }

@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/libre-caslon-text':
+        specifier: 5.2.7
+        version: 5.2.7
       '@supabase/supabase-js':
         specifier: ^2.117.2
         version: 2.117.2
+      three:
+        specifier: 0.180.0
+        version: 0.180.0
     devDependencies:
       vite:
         specifier: ^8.3.3
@@ -226,6 +232,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource/libre-caslon-text@5.2.7':
+    resolution: {integrity: sha512-popxcrFaQyr1KtVwAxPF3s30ioZwHsASO1Np+w7KbKUw5N57aluimNZWDDNFDKlph536PS8QCpCG4k3Wj7QlyQ==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -717,6 +726,9 @@ packages:
     resolution: {integrity: sha512-SS+jx45GF1QjgEXQx4NJZV9ImqmO2NPz5FNsIHrsDjh2YsHnawpan7SNQ1o8NuhrbHZy9AZhIoCUiCeaW/C80g==}
     engines: {node: '>=18'}
 
+  three@0.180.0:
+    resolution: {integrity: sha512-o+qycAMZrh+TsE01GqWUxUIKR1AL0S8pq7zDkYOQw8GqfX8b8VoCKYUoHbhiX5j+7hr8XsuHDVU6+gkQJQKg9w==}
+
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -918,6 +930,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.1':
     optional: true
+
+  '@fontsource/libre-caslon-text@5.2.7': {}
 
   '@img/colour@1.1.0': {}
 
@@ -1315,6 +1329,8 @@ snapshots:
   source-map-js@1.2.2: {}
 
   supports-color@10.2.2: {}
+
+  three@0.180.0: {}
 
   tinyglobby@0.2.17:
     dependencies:

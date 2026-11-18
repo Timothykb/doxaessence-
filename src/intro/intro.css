@@ -1,0 +1,43 @@
+@font-face{font-family:DoxaFilm;src:url('@fontsource/libre-caslon-text/files/libre-caslon-text-latin-400-normal.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:DoxaFilm;src:url('@fontsource/libre-caslon-text/files/libre-caslon-text-latin-400-italic.woff2') format('woff2');font-style:italic;font-weight:400;font-display:swap}
+@font-face{font-family:DoxaFilm;src:url('@fontsource/libre-caslon-text/files/libre-caslon-text-latin-700-normal.woff2') format('woff2');font-style:normal;font-weight:700;font-display:swap}
+.doxa-film{position:fixed;inset:0;z-index:1000;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at center,var(--film-burgundy),var(--film-black) 85%);color:var(--film-cream);opacity:1;transition:opacity .8s ease;contain:layout paint}
+.doxa-film.is-leaving{opacity:0;pointer-events:none}
+.doxa-film canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
+.doxa-film-skip{position:absolute;right:max(24px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:3;min-width:64px;min-height:44px;padding:10px 18px;font:12px/1.5 DoxaFilm,Georgia,serif;letter-spacing:.06em;color:var(--film-cream);border:1px solid color-mix(in srgb,var(--film-cream) 30%,transparent);border-radius:40px;background:transparent;cursor:pointer}
+.doxa-film-skip:hover{border-color:var(--film-cream)}
+.doxa-film-skip:focus-visible{outline:2px solid var(--film-cream);outline-offset:5px}
+.doxa-film-caption{position:absolute;bottom:14%;left:50%;transform:translateX(-50%);width:min(850px,85%);margin:0;text-align:center;font:400 clamp(22px,2.65vw,39px)/1.4 DoxaFilm,Georgia,serif;text-wrap:balance;color:var(--film-cream);text-shadow:0 0 12px color-mix(in srgb,var(--film-cream) 12%,transparent);pointer-events:none}
+.doxa-film-caption.is-verse{font-style:italic;font-size:clamp(23px,2.8vw,41px)}
+.doxa-film-end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:17px;opacity:0;pointer-events:none;text-align:center;color:var(--film-cream)}
+.doxa-film-end strong{font:400 clamp(20px,2.4vw,33px)/1.5 DoxaFilm,Georgia,serif;letter-spacing:.22em;padding-left:.22em}
+.doxa-film-end span{font:400 10px/1.5 DoxaFilm,Georgia,serif;letter-spacing:.2em}
+.intro-replay{display:inline-flex;gap:8px;align-items:center;font:inherit;letter-spacing:.08em;min-height:44px;padding:8px 0;margin-left:20px;color:inherit}
+.intro-replay[hidden]{display:none}
+@media(max-width:700px){.doxa-film-caption{bottom:17%;width:86%;font-size:22px;line-height:1.45}.doxa-film-caption.is-verse{font-size:23px}.doxa-film-skip{right:20px;bottom:max(22px,env(safe-area-inset-bottom))}.hero-bottom{align-items:center}.intro-replay{font-size:7px;margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.doxa-film{transition:none}}
+/* Speaker positions deliberately leave the illustration's silhouette unobscured. */
+.doxa-film-caption{bottom:auto;top:26%;transform:none;width:24%;font-size:clamp(20px,2vw,29px);line-height:1.4}
+.doxa-film-caption[data-side=left]{left:4%;text-align:right}
+.doxa-film-caption[data-side=right]{left:auto;right:4%;text-align:left}
+.doxa-film-caption.is-verse{font-size:clamp(21px,2.1vw,30px)}
+.doxa-film-caption:after{content:'';position:absolute;top:26px;width:35px;height:1px;background:var(--film-cream);opacity:.4}
+.doxa-film-caption[data-side=left]:after{left:calc(100% + 12px)}
+.doxa-film-caption[data-side=right]:after{right:calc(100% + 12px)}
+.doxa-film-sound{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:24px;z-index:3;min-height:44px;border:0;background:none;color:var(--film-cream);font:12px DoxaFilm,serif;cursor:pointer;display:flex;align-items:center;gap:10px}
+.doxa-film-sound:focus-visible{outline:1px solid var(--film-cream);outline-offset:4px}
+@media(max-width:700px){.doxa-film-caption,.doxa-film-caption.is-verse{top:16%;width:80%;font-size:21px;line-height:1.4}.doxa-film-caption[data-side=left]{left:6%;text-align:left}.doxa-film-caption[data-side=right]{right:6%;text-align:right}.doxa-film-caption:after{top:calc(100% + 12px);width:1px;height:24px}.doxa-film-caption[data-side=left]:after{left:24%}.doxa-film-caption[data-side=right]:after{right:24%}}
+.doxa-film-logo{position:absolute;opacity:0;pointer-events:none;z-index:2;transform-origin:center;will-change:left,top,width,height}
+.doxa-film-logo-art{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.doxa-film-logo-swap{position:absolute;inset:0;opacity:0}
+.doxa-film-logo-swap .brand-logo{width:100%;height:100%;margin:0}
+.doxa-film{transition:none}
+
+.doxa-film-start{position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:radial-gradient(ellipse at center,#590000,#000 85%);text-align:center;padding:24px}
+.doxa-film-start span{font:10px DoxaFilm,serif;letter-spacing:.25em}
+.doxa-film-start h2{font:400 clamp(30px,5vw,62px)/1.2 DoxaFilm,serif;max-width:650px;margin:12px 0 28px}
+.doxa-film-start button{font:13px DoxaFilm,serif;color:#f3efe7;border:1px solid #f3efe770;border-radius:30px;padding:16px 28px;min-height:48px;background:transparent;cursor:pointer}
+.doxa-film-start button:disabled{opacity:.4;cursor:wait}
+.doxa-film-start [data-silent]{border-color:transparent;font-size:11px}
+.doxa-film-start button:focus-visible{outline:2px solid #f3efe7;outline-offset:5px}
+.doxa-film-sound[hidden]{display:none}

@@ -1,0 +1,16 @@
+Subject: You’re part of the beginning — DOXA ESSENCE
+
+Hi {{first_name}},
+
+Thank you for joining DOXA ESSENCE.
+
+You’re on the list for our newsletter and first launch. We’ll share news about The Genesis, our first fragrance, and the stories behind the brand. We’ll be in touch when there is something new to share.
+
+A story you can wear. A conversation waiting to begin.
+
+DOXA ESSENCE
+info@doxaessence.com
+KvK: 42192028 | VAT ID: NL004641482B76
+
+Privacy: {{site_url}}/privacy/
+Unsubscribe: {{unsubscribe_url}}

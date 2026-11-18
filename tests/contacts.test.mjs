@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {mergeContacts,filterContacts} from '../src/contact-utils.js';
+const customers=[{email:'Test@Example.invalid',name:'Klant',created_at:'2026-10-20'},{email:'customer@example.invalid',name:'Alleen klant'}];
+const launch=[{email:'test@example.invalid',first_name:'Voornaam',email_consent:true,created_at:'2026-10-21'},{email:'no@example.invalid',email_consent:false}];
+const legacy=[{email:'TEST@example.invalid',newsletter:true,samples:false,created_at:'2026-10-19'},{email:'sample@example.invalid',newsletter:false,samples:true}];
+const merged=mergeContacts(customers,launch,legacy);
+assert.equal(merged.length,4);
+const both=merged.find(r=>r.email==='test@example.invalid');assert.equal(both.name,'Klant');assert.equal(both.joined,'2026-10-19');assert.equal(both.sources.length,3);
+assert.equal(filterContacts(merged,'','both').length,1);assert.equal(filterContacts(merged,'','customers').length,2);
+assert.equal(filterContacts(merged,'','newsletter').length,1);assert.equal(filterContacts(merged,'','samples').length,1);
+assert.equal(merged.find(r=>r.email==='customer@example.invalid').newsletter,false);
+assert.equal(merged.find(r=>r.email==='no@example.invalid').newsletter,false);
+assert.equal(filterContacts(merged,' ALLEEN KLANT ','all').length,1);
+assert.equal(customers[0].email,'Test@Example.invalid');
+console.log('PASS: case-insensitive deduplication, source/consent preservation, customer status does not imply newsletter consent, independent contact filters.');

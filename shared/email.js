@@ -1,0 +1,19 @@
+export const escapeHtml = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function safeLink(value) {
+ try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch{return '';}
+}
+export function validateMail(mail) {
+ if(!mail || typeof mail.subject!=='string'||!mail.subject.trim()||mail.subject.length>180||/[\r\n]/.test(mail.subject))throw Error('Vul een geldig onderwerp in (maximaal 180 tekens).');
+ if(!Array.isArray(mail.blocks)||mail.blocks.length<1||mail.blocks.length>20)throw Error('Gebruik 1 tot 20 inhoudsblokken.');
+ for(const b of mail.blocks){if(!['heading','text','button'].includes(b.type)||typeof b.text!=='string'||!b.text.trim()||b.text.length>6000)throw Error('Vul alle blokken in (maximaal 6000 tekens per blok).');if(b.type==='button'&&!safeLink(b.url))throw Error('Gebruik voor iedere knop een volledige https-link.');}
+}
+const unsubscribeUrl='mailto:info@doxaessence.com?subject=Afmelden%20voor%20e-mails';
+const unsubscribeText=mail=>mail.language==='nl'?'Je kunt je op elk moment afmelden voor onze e-mails.':'You can unsubscribe from our emails at any time.';
+const socialLinks=[['Instagram','https://www.instagram.com/doxa.essence/'],['TikTok','https://www.tiktok.com/@doxaessence']];
+const socialFooter=mail=>mail.includeSocial?socialLinks.map(([label,url])=>` · <a href="${url}" style="color:#590000;text-decoration:underline">${label}</a>`).join(''):'';
+export function renderMail(mail) {
+ validateMail(mail);
+ const blocks=mail.blocks.map(b=>b.type==='heading'?`<h1 style="font:normal 30px/1.4 Georgia,serif;color:#590000">${escapeHtml(b.text)}</h1>`:b.type==='button'?`<p style="margin:28px 0"><a href="${escapeHtml(safeLink(b.url))}" style="display:inline-block;background:#590000;color:#fff;padding:16px 24px;text-decoration:none;border-radius:3px">${escapeHtml(b.text)}</a></p>`:`<p style="font:16px/1.8 Arial,sans-serif;white-space:pre-wrap">${escapeHtml(b.text)}</p>`).join('');
+ return `<!doctype html><html lang="${mail.language==='nl'?'nl':'en'}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(mail.subject)}</title></head><body style="margin:0;background:#f7f5ef;color:#352b29"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:32px 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:auto;background:#fffdf8;border:1px solid #ded9cf"><tr><td style="text-align:center;padding:32px;border-bottom:1px solid #ded9cf;font:30px Georgia,serif;letter-spacing:6px;color:#590000">DOXA<div style="font:10px Arial,sans-serif;letter-spacing:4px;margin-top:8px">ESSENCE</div></td></tr><tr><td style="padding:32px">${blocks}</td></tr><tr><td style="padding:24px 32px;border-top:1px solid #ded9cf;font:12px/1.7 Arial,sans-serif;color:#76675e">DOXA ESSENCE<br><a href="https://doxaessence.com" style="color:#590000">doxaessence.com</a> · <a href="mailto:info@doxaessence.com" style="color:#590000">info@doxaessence.com</a>${socialFooter(mail)}<p style="margin:16px 0 0;font:12px/1.7 Arial,sans-serif;color:#655950">${unsubscribeText(mail)} <a href="${unsubscribeUrl}" style="color:#590000;text-decoration:underline">${mail.language==='nl'?'Afmelden per e-mail':'Unsubscribe by email'}</a>.</p></td></tr></table></td></tr></table></body></html>`;
+}
+export const plainMail = mail => mail.blocks.map(b=>b.text+(b.type==='button'?'\n'+safeLink(b.url):'')).join('\n\n')+'\n\nDOXA ESSENCE · https://doxaessence.com\n'+unsubscribeText(mail)+' '+(mail.language==='nl'?'Mail voor afmelding naar':'To unsubscribe, email')+' info@doxaessence.com (Afmelden voor e-mails).'+(mail.includeSocial?'\n\n'+socialLinks.map(([label,url])=>label+': '+url).join('\n'):'');
