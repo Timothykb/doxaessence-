@@ -1,10 +1,10 @@
 /* Doxa Essence — intro (standalone add-on; changes nothing on the site itself).
    While the script prepares, html.doxa-intro-pending shows a plain bordeaux
-   cover. That cover removes itself after 4.5 s in pure CSS, so the site can
+   cover. That cover removes itself after 5.5 s in pure CSS, so the site can
    never stay hidden, even if JavaScript or an image fails to load. */
 html.doxa-intro-pending::before {
   content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #590000;
-  animation: doxa-intro-failsafe 1ms linear 4.5s forwards;
+  animation: doxa-intro-failsafe 1ms linear 5.5s forwards;
 }
 @keyframes doxa-intro-failsafe { to { opacity: 0; visibility: hidden; } }
 
@@ -26,6 +26,7 @@ html.doxa-intro-active [data-intro-logo-target] img { visibility: hidden; }
   position: absolute; inset: 0;
   background: radial-gradient(ellipse 70% 60% at 50% var(--seam), transparent 35%, rgb(30 0 0 / .55) 100%);
 }
+#doxa-intro .di-motes { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 #doxa-intro .di-seam {
   position: absolute; left: 0; right: 0; top: var(--seam); height: 1px; margin-top: -.5px;
   background: #fffaf2; transform: scaleX(0); opacity: 0;
