@@ -26,7 +26,6 @@ html.doxa-intro-active [data-intro-logo-target] img { visibility: hidden; }
   position: absolute; inset: 0;
   background: radial-gradient(ellipse 70% 60% at 50% var(--seam), transparent 35%, rgb(30 0 0 / .55) 100%);
 }
-#doxa-intro .di-motes { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 #doxa-intro .di-seam {
   position: absolute; left: 0; right: 0; top: var(--seam); height: 1px; margin-top: -.5px;
   background: #fffaf2; transform: scaleX(0); opacity: 0;
@@ -36,7 +35,7 @@ html.doxa-intro-active [data-intro-logo-target] img { visibility: hidden; }
   transform-origin: 0 0; will-change: transform;
 }
 #doxa-intro .di-logo img {
-  position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none;
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; will-change: transform, opacity;
   -webkit-user-drag: none; user-select: none;
 }
 /* the light travelling along the rule as it is drawn */
