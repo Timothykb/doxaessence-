@@ -1,0 +1,57 @@
+/* Doxa Essence — intro (standalone add-on; changes nothing on the site itself).
+   While the script prepares, html.doxa-intro-pending shows a plain bordeaux
+   cover. That cover removes itself after 4.5 s in pure CSS, so the site can
+   never stay hidden, even if JavaScript or an image fails to load. */
+html.doxa-intro-pending::before {
+  content: ""; position: fixed; inset: 0; z-index: 2147483000; background: #590000;
+  animation: doxa-intro-failsafe 1ms linear 4.5s forwards;
+}
+@keyframes doxa-intro-failsafe { to { opacity: 0; visibility: hidden; } }
+
+html.doxa-intro-active, html.doxa-intro-active body { overflow: hidden; }
+html.doxa-intro-active [data-intro-logo-target] img { visibility: hidden; }
+
+#doxa-intro {
+  position: fixed; inset: 0; z-index: 2147483001; pointer-events: none;
+  --seam: 50%;
+}
+#doxa-intro .di-panel {
+  position: absolute; left: 0; right: 0; background: #590000; pointer-events: auto;
+  will-change: transform;
+}
+#doxa-intro .di-top { top: 0; height: var(--seam); }
+#doxa-intro .di-bottom { top: var(--seam); bottom: 0; }
+/* darkness before the first light: a quiet falloff toward the edges, gone by the hand-off */
+#doxa-intro .di-shade {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% var(--seam), transparent 35%, rgb(30 0 0 / .55) 100%);
+}
+#doxa-intro .di-seam {
+  position: absolute; left: 0; right: 0; top: var(--seam); height: 1px; margin-top: -.5px;
+  background: #fffaf2; transform: scaleX(0); opacity: 0;
+}
+#doxa-intro .di-logo {
+  position: absolute; left: 50%; top: 50%; width: min(72vw, 460px); aspect-ratio: 1244 / 711;
+  transform-origin: 0 0; will-change: transform;
+}
+#doxa-intro .di-logo img {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none;
+  -webkit-user-drag: none; user-select: none;
+}
+/* the light travelling along the rule as it is drawn */
+#doxa-intro .di-glint {
+  position: absolute; left: 28.7%; right: 27.9%; top: 58.3%; height: 2.4%;   /* the rule sits at 28.7–72.1% × 59.2–59.9% of the logo file */
+  background: radial-gradient(closest-side, rgb(255 246 228 / .9), transparent);
+  opacity: 0; filter: blur(1.5px);
+}
+#doxa-intro .di-skip {
+  position: absolute; right: max(20px, env(safe-area-inset-right, 0px)); bottom: max(18px, env(safe-area-inset-bottom, 0px));
+  min-height: 44px; padding: 10px 6px; border: 0; background: none; cursor: pointer; pointer-events: auto;
+  color: rgb(255 250 242 / .62); font: 600 11px/1 Arial, Helvetica, sans-serif; letter-spacing: .2em; text-transform: uppercase;
+  transition: color .2s ease, opacity .3s ease;
+}
+#doxa-intro .di-skip:hover { color: #fffaf2; }
+#doxa-intro .di-skip:focus-visible { outline: 1px solid #fffaf2; outline-offset: 4px; color: #fffaf2; }
+#doxa-intro.di-leaving .di-skip { opacity: 0; pointer-events: none; }
+@media (max-width: 560px) { #doxa-intro .di-skip { right: max(14px, env(safe-area-inset-right, 0px)); font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) { html.doxa-intro-pending::before, #doxa-intro { display: none !important; } }
